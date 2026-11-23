@@ -1,0 +1,46 @@
+.models/
+_BACKUP*/
+*.lock.sqlite*
+lumina_jobs.sqlite*
+# Secret keys & credentials
+.env
+firebase-key.json
+serviceAccountKey.json
+*service-account*.json
+*.pem
+*.key
+.lumina_media_key
+
+# Üretilen görseller (imzalı/süreli servis edilir, repoya girmez)
+media/
+_gorsel_test_sonuclari/
+
+# Firebase client configs (contain a web API key)
+google-services.json
+firabase.json
+firebase.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Local memory & logs
+lumina_memory.json
+lumina_knowledge.json
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Cloudflare local dev secrets
+.dev.vars
+

@@ -1,0 +1,53 @@
+# ============================================================
+# LUMINA AI — .dev.vars (CLOUDFLARE YEREL GELİŞTİRME GİZLİ DEĞİŞKENLERİ)
+# 
+# Bu dosya Cloudflare Workers yerel geliştirme için gizli değerleri tutar.
+# `npx pywrangler dev` bu dosyayı otomatik olarak okur.
+#
+# ÖNEMLİ GÜVENLİK KURALLARI:
+# - Bu dosya .gitignore'a EKLENMELİDİR (zaten ekli — kontrol edin)
+# - GitHub'a, CI/CD'ye veya başka bir sisteme ASLA commit etmeyin
+# - Üretim için: npx wrangler secret put <KEY> kullanın
+# - Bu dosyada GERÇEK DEĞERLER bulunmaz — sadece değişken adları
+# ============================================================
+
+# Groq API Anahtarları (Çoklu havuz)
+GROQ_API_KEY_1=BURAYA_GERCEK_ANAHTARI_YAZIN
+GROQ_API_KEY_2=
+GROQ_API_KEY_3=
+GROQ_API_KEY_4=
+GROQ_API_KEY_5=
+GROQ_API_KEY_6=
+GROQ_API_KEY_7=
+
+# Gemini API
+GEMINI_API_KEY=BURAYA_GERCEK_ANAHTARI_YAZIN
+
+# GitHub Models
+GITHUB_TOKEN=
+
+# Cloudflare Image Generation
+CLOUDFLARE_ACCOUNT_ID=BURAYA_CF_ACCOUNT_ID
+CLOUDFLARE_API_TOKEN=BURAYA_CF_API_TOKEN
+
+# Firebase (REST API üzerinden — firebase-admin değil)
+FIREBASE_PROJECT_ID=lumina-ai-a42e0
+FIREBASE_API_KEY=BURAYA_FIREBASE_WEB_API_KEY
+
+# Konum Servisleri
+GOOGLE_MAPS_API_KEY=
+GOOGLE_PLACES_API_KEY=
+OPENWEATHERMAP_API_KEY=
+
+# Web Arama
+TAVILY_API_KEY=
+
+# Ses (TTS)
+ELEVENLABS_API_KEY=
+
+# Güvenlik
+LUMINA_GUEST_SECRET=BURAYA_EN_AZ_32_KARAKTER_RASTGELE_DEGER
+LUMINA_MEDIA_SIGNING_KEY=BURAYA_EN_AZ_32_KARAKTER_RASTGELE_DEGER
+
+# CORS
+ALLOWED_ORIGINS=https://arelozcan3545-max.github.io

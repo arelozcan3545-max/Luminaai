@@ -1,0 +1,256 @@
+{
+  "profiles": {
+    "guest_test123456": {
+      "uid": "guest_test123456",
+      "name": null,
+      "facts": [],
+      "subscription_tier": "standart",
+      "subscription_status": "active",
+      "created_at": 1792142200,
+      "daily_usage": {
+        "date": "2026-10-16",
+        "messages": 1,
+        "images": 0
+      },
+      "family_members": []
+    },
+    "guest_user": {
+      "uid": "guest_user",
+      "name": null,
+      "facts": [],
+      "subscription_tier": "standart",
+      "subscription_status": "active",
+      "created_at": 1792143264,
+      "daily_usage": {
+        "date": "2026-10-16",
+        "messages": 3,
+        "images": 0
+      },
+      "family_members": [],
+      "subscription_events": []
+    },
+    "guest_bc5c80f7-6675-4a60-b375-4c12f11d98e3": {
+      "uid": "guest_bc5c80f7-6675-4a60-b375-4c12f11d98e3",
+      "name": null,
+      "facts": [],
+      "subscription_tier": "ekonomi",
+      "subscription_status": "preview",
+      "created_at": 1792144008,
+      "daily_usage": {
+        "date": "2026-10-16",
+        "messages": 0,
+        "images": 0
+      },
+      "family_members": [],
+      "subscription_events": [
+        {
+          "type": "plan_selected",
+          "payload": {
+            "plan": "ekonomi"
+          },
+          "timestamp": 1792144051
+        }
+      ],
+      "subscription_price": 150,
+      "subscription_updated_at": 1792144051
+    },
+    "guest_aa9464b5-a9c0-4854-95d9-2ce0c5f37900": {
+      "uid": "guest_aa9464b5-a9c0-4854-95d9-2ce0c5f37900",
+      "name": null,
+      "facts": [],
+      "subscription_tier": "standart",
+      "subscription_status": "active",
+      "created_at": 1793868545,
+      "daily_usage": {
+        "date": "2026-11-05",
+        "messages": 0,
+        "images": 0
+      },
+      "family_members": [],
+      "subscription_events": []
+    },
+    "app0NsCmcvgZefyiQ1IJtWsX8K93": {
+      "uid": "app0NsCmcvgZefyiQ1IJtWsX8K93",
+      "name": null,
+      "facts": [],
+      "subscription_tier": "standart",
+      "subscription_status": "active",
+      "created_at": 1793869006,
+      "daily_usage": {
+        "date": "2026-11-05",
+        "messages": 0,
+        "images": 0
+      },
+      "family_members": [],
+      "subscription_events": []
+    },
+    "guest_cef95503-5d89-4de0-b4e5-6e049a166396": {
+      "uid": "guest_cef95503-5d89-4de0-b4e5-6e049a166396",
+      "name": null,
+      "facts": [],
+      "subscription_tier": "standart",
+      "subscription_status": "active",
+      "created_at": 1793871920,
+      "daily_usage": {
+        "date": "2026-11-05",
+        "messages": 0,
+        "images": 0
+      },
+      "family_members": [],
+      "subscription_events": []
+    },
+    "guest_413afa89-53e9-43a2-8493-2e5efaab8502": {
+      "uid": "guest_413afa89-53e9-43a2-8493-2e5efaab8502",
+      "name": null,
+      "facts": [],
+      "subscription_tier": "standart",
+      "subscription_status": "active",
+      "created_at": 1794036045,
+      "daily_usage": {
+        "date": "2026-11-07",
+        "messages": 0,
+        "images": 0
+      },
+      "family_members": [],
+      "subscription_events": []
+    },
+    "guest_ffd7ccc1-3e06-41ca-b477-4e4361c68829": {
+      "uid": "guest_ffd7ccc1-3e06-41ca-b477-4e4361c68829",
+      "name": null,
+      "facts": [],
+      "subscription_tier": "standart",
+      "subscription_status": "active",
+      "created_at": 1794133426,
+      "daily_usage": {
+        "date": "2026-11-08",
+        "messages": 0,
+        "images": 0
+      },
+      "family_members": [],
+      "subscription_events": []
+    },
+    "guest_adc4533b-7832-47c8-888a-02a0597be0aa": {
+      "uid": "guest_adc4533b-7832-47c8-888a-02a0597be0aa",
+      "name": null,
+      "facts": [],
+      "subscription_tier": "standart",
+      "subscription_status": "active",
+      "created_at": 1794133850,
+      "daily_usage": {
+        "date": "2026-11-08",
+        "messages": 0,
+        "images": 0
+      },
+      "family_members": [],
+      "subscription_events": []
+    },
+    "guest_7781148d-954b-4f33-a880-be53c20d5052": {
+      "uid": "guest_7781148d-954b-4f33-a880-be53c20d5052",
+      "name": null,
+      "facts": [],
+      "subscription_tier": "standart",
+      "subscription_status": "active",
+      "created_at": 1794905116,
+      "daily_usage": {
+        "date": "2026-11-17",
+        "messages": 0,
+        "images": 0
+      },
+      "family_members": [],
+      "subscription_events": []
+    },
+    "guest_5d4e5d29-b474-472c-b0dd-1cdc5f8d9b06": {
+      "uid": "guest_5d4e5d29-b474-472c-b0dd-1cdc5f8d9b06",
+      "name": null,
+      "facts": [],
+      "subscription_tier": "standart",
+      "subscription_status": "active",
+      "created_at": 1794986710,
+      "daily_usage": {
+        "date": "2026-11-18",
+        "messages": 0,
+        "images": 0
+      },
+      "family_members": [],
+      "subscription_events": []
+    },
+    "guest_PvRYfXhcS75F0EKR5CRpXn": {
+      "uid": "guest_PvRYfXhcS75F0EKR5CRpXn",
+      "name": null,
+      "facts": [],
+      "subscription_tier": "standart",
+      "subscription_status": "active",
+      "created_at": 1795373571,
+      "daily_usage": {
+        "date": "2026-11-22",
+        "messages": 3,
+        "images": 1
+      },
+      "family_members": [],
+      "subscription_events": [],
+      "voice_preference": {
+        "profile_id": "elif",
+        "provider": null,
+        "updated_at": 1795375699
+      },
+      "location_preference": {
+        "permission": "granted",
+        "manual_city": null,
+        "manual_latitude": null,
+        "manual_longitude": null,
+        "updated_at": 1795375717,
+        "note": "Bu oturum için cihaz konumu izni verildi."
+      },
+      "conversation_image_usage": {}
+    }
+  },
+  "guest_bc5c80f7-6675-4a60-b375-4c12f11d98e3": [
+    {
+      "user": "Merhaba",
+      "bot": "Merhaba! 🌟 Seni görmek ne güzel. Bugün nasıl hissediyorsun? Her şey yolunda mı, yoksa bir konuda destek ister misin? Ne söyle, seninle birlikte konuşmaktan mutluluk duyarım.",
+      "timestamp": 1792144052
+    },
+    {
+      "user": "naber",
+      "bot": "Merhaba! 😊 Ben her zaman burada, seninle sohbet etmeye hazırım. Neler var bugün, ne düşünüyorsun? Biraz keyifli bir şey mi bekliyorsun, yoksa gündelik bir konuda mı konuşmak istersin? Her şey yolunda mı, yoksa bir şeye ihtiyacın var mı? Ben buradayım, dinlemeye hazırım!",
+      "timestamp": 1792144078
+    },
+    {
+      "user": "Merhaba, kota testi",
+      "bot": "Merhaba! 🚀 Kota testiyle ilgili ne yapmamı istersin? Limitleri görmek, yanıt sürelerini ölçmek ya da başka bir şey mi düşünüyorsun? Bana biraz daha ayrıntı verirsen, hemen yardımcı olabilirim!",
+      "timestamp": 1792144440
+    }
+  ],
+  "guest_PvRYfXhcS75F0EKR5CRpXn": [
+    {
+      "user": "konumuma en yakın berber nerede",
+      "bot": "Merhaba! ð Åu anki konumuna en yakÄ±n berberler aÅaÄÄ±daki gibi sÄ±ralanmÄ±Å:\n\n| SÄ±ra | Berber AdÄ± | Mesafe | Adres |\n|------|------------|--------|-------|\n| 1 | **Nedim Berber** | **2.87â¯km** | Ä°nÃ¶nÃ¼ Caddesi, Arap Hasan Mahallesi |\n| 2 | **KozaÄaÃ§ Berber** | **3.31â¯km** | Gazeteci Ä°smail Sivri BulvarÄ±, KozaÄaÃ§ Mahallesi |\n| 3 | **Berber Rahim** | **3.69â¯km** | TalatpaÅa BulvarÄ±, KÃ¼ltÃ¼r Mahallesi |\n\n*Kaynak: OpenStreetMap (Overpass / Nominatim) â 2026â11â22â¯19:29â¯UTC*  \n\nBu bilgiler, sadece mesafeye gÃ¶re en yakÄ±n Ã¼Ã§ berberin listesidir; puan ve yorum gibi ek veriler OpenStreetMap kayÄ±tlarÄ±nda bulunmadÄ±ÄÄ± iÃ§in boÅ bÄ±rakÄ±lmÄ±ÅtÄ±r. UmarÄ±m saÃ§larÄ±nÄ±za yeni bir dokunuÅ katacak gÃ¼zel bir yer bulursunuz! ððââï¸ðââï¸  \n\nÄ°yi kuafÃ¶r deneyimleri dilerim! ðâ¨",
+      "timestamp": 1795375742
+    },
+    {
+      "user": "bana şuanki konumumu söyler misin?",
+      "bot": "Merhaba! Åu anki konumun **Ä°zmir'in Buca ilÃ§esi civarÄ±nda**. ðð§­  \n\nBu bilgi, sistemdeki gerÃ§ek zamanlÄ± konum verisinden (OpenStreetMapâ¯Nominatim, 2026â11â22â¯19:29â¯UTC) alÄ±nmÄ±ÅtÄ±r. BaÅka bir detay ya da yÃ¶nlendirme istersen, seve seve yardÄ±mcÄ± olurum! ð",
+      "timestamp": 1795375773
+    },
+    {
+      "user": "Selam",
+      "bot": "**Selam!** ð  \nNasÄ±lsÄ±n, bugÃ¼n nasÄ±lsÄ±n? Bir Åeyde yardÄ±mcÄ± olabilirsem ya da sadece sohbet etmek istersen buradayÄ±m! ð",
+      "timestamp": 1795375817
+    },
+    {
+      "user": "(Sessiz Yoklama)",
+      "bot": "Hâlâ burada, sadece bir \"selam\" ile başladın gibi... 🌿  \nYakında bir şey olacaksa, ya da sadece bir dille konuşmak istersen, buradayım.  \nİçinde bir şey varsa, onu da paylaşabilirsin. 💬  \nİyi günler! 😊",
+      "timestamp": 1795376321
+    },
+    {
+      "user": "Selakm",
+      "bot": "**Selam!** 🌼  \nBugün nasılsın? Bir şeyler paylaşmak ya da sohbet etmek istersen hemen buradayım. 😊",
+      "timestamp": 1795376501
+    },
+    {
+      "user": "gayet iyiğim",
+      "bot": "Harika! 🌟  \nİyi hissettiğine çok sevindim. Bugün neler yapmayı planlıyorsun? Bir konuda yardıma ihtiyacın varsa ya da sadece keyifli bir sohbet istersen, buradayım! 😊",
+      "timestamp": 1795376561
+    }
+  ]
+}
