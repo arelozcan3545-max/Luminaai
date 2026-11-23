@@ -1,0 +1,4618 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://www.gstatic.com https://cdn.jsdelivr.net https://maps.googleapis.com https://maps.gstatic.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; media-src 'self' blob:; img-src 'self' data: blob: https:; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; connect-src 'self' http://127.0.0.1:8000 http://localhost:8000 https: wss:; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com; object-src 'none'; base-uri 'self'; form-action 'self';">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Lumina AI — Yeni Nesil Zeki & Çoklu Ajan Asistanı</title>
+    <meta name="description" content="Lumina AI: Duygusal, zeki ve çoklu ajan destekli yapay zeka asistanı. Adım adım matematik, tam teşekküllü yazılım ekibi ve ultra gerçekçi görsel stüdyosu.">
+    <meta name="theme-color" content="#0a0a0a">
+
+    <!-- Favicon (404'ü önlemek için gömülü SVG; harici istek yok) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%233b82f6'/%3E%3Cstop offset='1' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='36' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3EL%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%233b82f6'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='36' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3EL%3C/text%3E%3C/svg%3E">
+
+    <!-- Open Graph / Meta -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Lumina AI — Gelişmiş Çoklu Ajan ve Görsel Stüdyosu">
+    <meta property="og:description" content="Adım adım matematik, çoklu ajan yazılım ekibi ve foto-gerçekçi görsel üretimiyle donatılmış yeni nesil yapay zeka.">
+
+    <!-- Firebase Web SDK (Compat) -->
+    <script type="importmap">{"imports":{"onnxruntime-web":"https://cdn.jsdelivr.net/npm/onnxruntime-web@1.22.0/dist/ort.wasm.min.mjs"}}</script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+
+    <!-- Markdown & Syntax Highlighting -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.8.0/build/styles/atom-one-dark.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.8.0/build/highlight.min.js"></script>
+
+    <!-- KaTeX Math Rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <style>
+        /* =========================================================
+           EDGE-TO-EDGE FLUID DESIGN SYSTEM (ZERO EMPTY SPACE)
+        ========================================================= */
+        :root {
+            --font-scale: 1;
+            --font-main: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --sidebar-width: 270px;
+            --transition-speed: 0.22s;
+        }
+
+        /* Dark OLED Theme (Default) */
+        html[data-theme="dark"] {
+            --bg-base: #050505;
+            --bg-sidebar: #0b0b0b;
+            --bg-main: #101010;
+            --bg-card: #171717;
+            --bg-card-hover: #222222;
+            --bg-input: #151515;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.2);
+            --text-primary: #f5f5f5;
+            --text-secondary: #999999;
+            --text-muted: #555555;
+            --accent: #ffffff;
+            --accent-text: #000000;
+            --user-bubble: #252525;
+            --bot-bubble: #151515;
+            --scrollbar: #242424;
+            --active-glow: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Midnight Glow Theme */
+        html[data-theme="midnight"] {
+            --bg-base: #030712;
+            --bg-sidebar: #060d21;
+            --bg-main: #0a132c;
+            --bg-card: #0f1c3f;
+            --bg-card-hover: #162654;
+            --bg-input: #0b1531;
+            --border: rgba(80, 120, 255, 0.15);
+            --border-hover: rgba(80, 120, 255, 0.35);
+            --text-primary: #f0f4fc;
+            --text-secondary: #8da2c7;
+            --text-muted: #4e6082;
+            --accent: #3b82f6;
+            --accent-text: #ffffff;
+            --user-bubble: #1b2f60;
+            --bot-bubble: #0f1c3f;
+            --scrollbar: #1b2b52;
+            --active-glow: rgba(59, 130, 246, 0.12);
+        }
+
+        /* Clean Light Theme */
+        html[data-theme="light"] {
+            --bg-base: #f5f6f8;
+            --bg-sidebar: #ffffff;
+            --bg-main: #f9fafb;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f1f3f5;
+            --bg-input: #ffffff;
+            --border: rgba(0, 0, 0, 0.09);
+            --border-hover: rgba(0, 0, 0, 0.22);
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --text-muted: #9ca3af;
+            --accent: #111827;
+            --accent-text: #ffffff;
+            --user-bubble: #e5e7eb;
+            --bot-bubble: #ffffff;
+            --scrollbar: #d1d5db;
+            --active-glow: rgba(0, 0, 0, 0.04);
+        }
+
+        /* =========================================================
+           GIRLY MODE & BOYS MODE DESIGN TOKENS & EXPERIENCES
+        ========================================================= */
+        html[data-personality-mode="girly"] {
+            --accent: #f472b6 !important;
+            --accent-glow: rgba(244, 114, 182, 0.28) !important;
+            --border-hover: rgba(244, 114, 182, 0.45) !important;
+            --accent-text: #ffffff !important;
+            --orb-accent: #f472b6 !important;
+            --active-glow: rgba(244, 114, 182, 0.12) !important;
+        }
+
+        html[data-theme="dark"][data-personality-mode="girly"],
+        html[data-theme="midnight"][data-personality-mode="girly"] {
+            --bg-base: #100b14;
+            --bg-sidebar: #17101c;
+            --bg-main: #140d1a;
+            --bg-card: #201429;
+            --bg-card-hover: #2d1c3a;
+            --bg-input: #1a1122;
+            --border: rgba(244, 114, 182, 0.16);
+            --user-bubble: rgba(244, 114, 182, 0.22);
+            --bot-bubble: #1e1326;
+            --text-primary: #fff1f5;
+            --text-secondary: #d8b4e2;
+            --text-muted: #8d739b;
+        }
+
+        html[data-theme="light"][data-personality-mode="girly"] {
+            --bg-base: #fff7fa;
+            --bg-sidebar: #ffffff;
+            --bg-main: #fff0f5;
+            --bg-card: #ffffff;
+            --bg-card-hover: #ffe4ee;
+            --bg-input: #ffffff;
+            --border: rgba(244, 114, 182, 0.25);
+            --user-bubble: #fce7f3;
+            --bot-bubble: #ffffff;
+            --text-primary: #3b1126;
+            --text-secondary: #702e50;
+            --text-muted: #a26584;
+        }
+
+        html[data-personality-mode="boys"] {
+            --accent: #00d2ff !important;
+            --accent-glow: rgba(0, 210, 255, 0.32) !important;
+            --border-hover: rgba(0, 210, 255, 0.55) !important;
+            --accent-text: #050b14 !important;
+            --orb-accent: #00d2ff !important;
+            --active-glow: rgba(0, 210, 255, 0.14) !important;
+        }
+
+        html[data-theme="dark"][data-personality-mode="boys"],
+        html[data-theme="midnight"][data-personality-mode="boys"] {
+            --bg-base: #040812;
+            --bg-sidebar: #070e1f;
+            --bg-main: #060b18;
+            --bg-card: #0b152d;
+            --bg-card-hover: #101e40;
+            --bg-input: #081024;
+            --border: rgba(0, 210, 255, 0.18);
+            --user-bubble: rgba(0, 112, 243, 0.28);
+            --bot-bubble: #0c1833;
+            --text-primary: #e6f1ff;
+            --text-secondary: #8ba2c7;
+            --text-muted: #4e6385;
+        }
+
+        html[data-theme="light"][data-personality-mode="boys"] {
+            --bg-base: #f0f5ff;
+            --bg-sidebar: #ffffff;
+            --bg-main: #f5f8ff;
+            --bg-card: #ffffff;
+            --bg-card-hover: #e0ecff;
+            --bg-input: #ffffff;
+            --border: rgba(0, 112, 243, 0.22);
+            --user-bubble: #dbeafe;
+            --bot-bubble: #ffffff;
+            --text-primary: #0a1930;
+            --text-secondary: #2b4570;
+            --text-muted: #5e7a9e;
+        }
+
+        /* Girly Mode & Boys Mode Bubble & Detail Enhancements */
+        html[data-personality-mode="girly"] .user-bubble {
+            border: 1px solid rgba(244, 114, 182, 0.35);
+            border-radius: 18px 18px 4px 18px;
+            box-shadow: 0 4px 14px rgba(244, 114, 182, 0.12);
+        }
+        html[data-personality-mode="girly"] .bot-bubble {
+            border: 1px solid rgba(244, 114, 182, 0.22);
+            border-radius: 18px 18px 18px 4px;
+            box-shadow: 0 4px 16px rgba(244, 114, 182, 0.08);
+        }
+        html[data-personality-mode="boys"] .user-bubble {
+            border: 1px solid rgba(0, 210, 255, 0.4);
+            border-radius: 12px 12px 2px 12px;
+            box-shadow: 0 4px 16px rgba(0, 112, 243, 0.18);
+        }
+        html[data-personality-mode="boys"] .bot-bubble {
+            border: 1px solid rgba(0, 210, 255, 0.24);
+            border-left: 3px solid var(--accent);
+            border-radius: 12px 12px 12px 2px;
+            box-shadow: 0 4px 18px rgba(0, 210, 255, 0.09);
+        }
+
+        /* Floating Sparkles & Particles Container (Girly Mode) */
+        .girly-particles-bg {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        html[data-personality-mode="girly"] .girly-particles-bg {
+            display: block;
+        }
+        .girly-particle {
+            position: absolute;
+            font-size: 16px;
+            opacity: 0.22;
+            animation: floatGirlyParticle 14s infinite linear;
+            user-select: none;
+        }
+        @keyframes floatGirlyParticle {
+            0% { transform: translateY(105vh) rotate(0deg); opacity: 0; }
+            15% { opacity: 0.25; }
+            85% { opacity: 0.25; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Topbar Mode Indicator & Audio Quick Buttons */
+        .mode-topbar-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 14px;
+            font-size: 11.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+        .mode-topbar-indicator:hover {
+            transform: scale(1.04);
+        }
+        .mode-topbar-indicator.girly {
+            background: rgba(244, 114, 182, 0.18);
+            color: #f472b6;
+            border: 1px solid rgba(244, 114, 182, 0.4);
+        }
+        .mode-topbar-indicator.boys {
+            background: rgba(0, 210, 255, 0.16);
+            color: #00d2ff;
+            border: 1px solid rgba(0, 210, 255, 0.4);
+        }
+        .mode-audio-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 13px;
+        }
+        .mode-audio-btn:hover {
+            border-color: var(--accent);
+            background: var(--bg-card-hover);
+        }
+        .mode-audio-btn.active {
+            border-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .girly-particle { animation: none !important; display: none !important; }
+            .mode-topbar-indicator { transition: none !important; transform: none !important; }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-main);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            background: var(--bg-base);
+            color: var(--text-primary);
+            font-size: calc(14px * var(--font-scale));
+        }
+
+        button, input, select, textarea {
+            font: inherit;
+            color: inherit;
+        }
+
+        /* =========================================================
+           APP LAYOUT (FULLSCREEN 100% NO DEAD SPACE)
+        ========================================================= */
+        #app-layout {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* =========================================================
+           SIDEBAR (RESPONSIVE DRAWER)
+        ========================================================= */
+        #sidebar {
+            width: var(--sidebar-width);
+            height: 100%;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            transition: transform var(--transition-speed) ease, margin-left var(--transition-speed) ease;
+            z-index: 50;
+        }
+
+        #sidebar.collapsed {
+            margin-left: calc(-1 * var(--sidebar-width));
+        }
+
+        .sidebar-header {
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand-logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .brand-logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: var(--accent);
+            color: var(--accent-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 16px;
+        }
+
+        .brand-title {
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .brand-badge {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 6px;
+            background: var(--border);
+            color: var(--text-secondary);
+            margin-left: 4px;
+        }
+
+        .new-chat-btn {
+            margin: 14px 14px 10px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .new-chat-btn:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-hover);
+            transform: translateY(-1px);
+        }
+
+        /* AGENT MODES SECTION */
+        .sidebar-section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+            padding: 10px 18px 4px;
+            font-weight: 700;
+        }
+
+        .agent-nav-list {
+            list-style: none;
+            padding: 0 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .agent-nav-item {
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-weight: 550;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            transition: 0.15s ease;
+            border: 1px solid transparent;
+        }
+
+        .agent-nav-item:hover {
+            color: var(--text-primary);
+            background: var(--bg-card);
+        }
+
+        .agent-nav-item.active {
+            color: var(--accent-text);
+            background: var(--accent);
+            font-weight: 650;
+        }
+
+        /* CHAT HISTORY SECTION */
+        .history-list-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px 10px;
+        }
+
+        .history-list-area::-webkit-scrollbar {
+            width: 4px;
+        }
+        .history-list-area::-webkit-scrollbar-thumb {
+            background: var(--scrollbar);
+            border-radius: 4px;
+        }
+
+        .history-item {
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2px;
+            transition: 0.15s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .history-item:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .history-item.active {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .history-del-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 11px;
+            opacity: 0;
+            transition: 0.15s ease;
+        }
+
+        .history-item:hover .history-del-btn {
+            opacity: 1;
+        }
+
+        .history-del-btn:hover {
+            color: #ef4444;
+        }
+
+        /* SIDEBAR FOOTER (CONTROLS) */
+        .sidebar-footer {
+            padding: 12px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: var(--bg-sidebar);
+        }
+
+        .footer-btn-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+        }
+
+        .sidebar-btn {
+            padding: 8px;
+            border-radius: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.15s ease;
+        }
+
+        .sidebar-btn:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+            border-color: var(--border-hover);
+        }
+
+        .user-pill-bar {
+            padding: 8px 10px;
+            border-radius: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+
+        /* YENİ HESAP KARTI (SIDEBAR) */
+        .account-card {
+            padding: 10px;
+            border-radius: 12px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015));
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .account-main {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            overflow: hidden;
+        }
+
+        .account-avatar {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 750;
+            color: var(--accent-text);
+            background: linear-gradient(135deg, var(--accent), rgba(255,255,255,0.25));
+            box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+        }
+
+        .account-text {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .account-name {
+            font-size: 12.5px;
+            font-weight: 650;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .account-sub {
+            font-size: 10.5px;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .account-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 5px;
+        }
+
+        .account-action-btn {
+            padding: 6px 4px;
+            border-radius: 7px;
+            font-size: 10.5px;
+            font-weight: 600;
+            font-family: inherit;
+            color: var(--text-secondary);
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: 0.15s ease;
+        }
+
+        .account-action-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--border-hover);
+            background: var(--bg-card-hover);
+        }
+
+        .account-action-btn.account-google {
+            color: var(--text-primary);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .account-logout-btn {
+            width: 100%;
+            padding: 3px 4px 2px;
+            border: none;
+            background: transparent;
+            color: #ef4444;
+            font-size: 10.5px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            opacity: 0.85;
+        }
+
+        .account-logout-btn:hover { opacity: 1; }
+
+        .account-actions[hidden],
+        .account-logout-btn[hidden] { display: none; }
+
+        /* =========================================================
+           MAIN CHAT AREA (FLUID FULLSCREEN)
+        ========================================================= */
+        #main-area {
+            flex: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-main);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* MAIN TOP BAR */
+        .chat-topbar {
+            height: 54px;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-main);
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+            z-index: 20;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toggle-sidebar-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: 0.15s ease;
+        }
+
+        .toggle-sidebar-btn:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+
+        .current-agent-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 6px #10b981;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .top-action-btn {
+            padding: 6px 10px;
+            border-radius: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.15s ease;
+        }
+
+        .top-action-btn:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+
+        /* CHAT MESSAGE STREAM */
+        #chat-box {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 16px 16px;
+            scroll-behavior: smooth;
+        }
+
+        #chat-box::-webkit-scrollbar {
+            width: 6px;
+        }
+        #chat-box::-webkit-scrollbar-thumb {
+            background: var(--scrollbar);
+            border-radius: 6px;
+        }
+
+        .chat-content-wrap {
+            max-width: 880px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            min-height: 100%;
+        }
+
+        /* EMPTY STATE / STARTER CARDS */
+        .starter-hero {
+            margin: auto;
+            text-align: center;
+            padding: 30px 10px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .starter-hero-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 20px;
+            background: var(--accent);
+            color: var(--accent-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 800;
+            margin: 0 auto 16px;
+        }
+
+        .starter-hero h2 {
+            font-size: 22px;
+            font-weight: 750;
+            margin-bottom: 8px;
+            letter-spacing: -0.4px;
+        }
+
+        .starter-hero p {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            max-width: 540px;
+            margin: 0 auto 28px;
+            line-height: 1.5;
+        }
+
+        .starter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 12px;
+            text-align: left;
+        }
+
+        .starter-chip {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .starter-chip:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-card-hover);
+            transform: translateY(-2px);
+        }
+
+        .starter-chip-title {
+            font-weight: 650;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        .starter-chip-desc {
+            font-size: 11.5px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* MESSAGE BUBBLES */
+        .message-row {
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.2s ease;
+            max-width: 100%;
+        }
+
+        .user-row {
+            align-items: flex-end;
+        }
+
+        .bot-row {
+            align-items: flex-start;
+        }
+
+        .msg-meta {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .message-bubble {
+            max-width: 88%;
+            padding: 14px 18px;
+            border-radius: 16px;
+            line-height: 1.6;
+            word-break: break-word;
+            font-size: 14px;
+        }
+
+        .user-bubble {
+            background: var(--user-bubble);
+            color: var(--text-primary);
+            border-bottom-right-radius: 4px;
+        }
+
+        .bot-bubble {
+            background: var(--bot-bubble);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            border-bottom-left-radius: 4px;
+        }
+
+        /* TYPOGRAPHY & MARKDOWN INSIDE BOT */
+        .bot-bubble h1, .bot-bubble h2, .bot-bubble h3 {
+            margin: 14px 0 8px;
+            font-weight: 700;
+        }
+        .bot-bubble h1 { font-size: 1.35em; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+        .bot-bubble h2 { font-size: 1.2em; }
+        .bot-bubble h3 { font-size: 1.05em; }
+        .bot-bubble p { margin-bottom: 8px; }
+        .bot-bubble ul, .bot-bubble ol { margin: 8px 0 8px 22px; }
+        .bot-bubble li { margin-bottom: 4px; }
+        .bot-bubble blockquote {
+            border-left: 3px solid var(--border-hover);
+            padding-left: 12px;
+            color: var(--text-secondary);
+            margin: 8px 0;
+        }
+
+        /* CODE BLOCK */
+        .code-container {
+            margin: 10px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: #0b0f17;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 12px;
+            background: #141b26;
+            font-size: 11px;
+            color: #8b9bb4;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: none;
+            color: #8b9bb4;
+            cursor: pointer;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: 0.15s ease;
+        }
+        .copy-btn:hover {
+            color: #ffffff;
+            background: rgba(255,255,255,0.1);
+        }
+
+        pre code {
+            padding: 12px !important;
+            display: block;
+            overflow-x: auto;
+            font-family: "JetBrains Mono", Consolas, Menlo, monospace !important;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        /* IMAGE RESULT CARD */
+        .image-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            margin-top: 10px;
+            max-width: 520px;
+        }
+
+        .image-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .image-card img:hover {
+            transform: scale(1.01);
+        }
+
+        .image-card-footer {
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-main);
+            border-top: 1px solid var(--border);
+            font-size: 12px;
+        }
+
+        .image-btn {
+            padding: 5px 10px;
+            border-radius: 6px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            font-size: 11px;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .image-btn:hover {
+            background: var(--bg-card-hover);
+        }
+
+        /* TYPING INDICATOR */
+        .typing-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-style: italic;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--text-secondary);
+            animation: dotPulse 1.2s infinite ease-in-out;
+        }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes dotPulse {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        /* BOTTOM INPUT CONTAINER (FLUID NO GAPS) */
+        .chat-input-bar-container {
+            padding: 8px 16px 14px;
+            background: var(--bg-main);
+            flex-shrink: 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .chat-input-inner {
+            max-width: 880px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            transition: 0.2s ease;
+        }
+
+        .chat-input-inner:focus-within {
+            border-color: var(--border-hover);
+            box-shadow: 0 0 0 3px var(--active-glow);
+        }
+
+        .input-tool-btn {
+            padding: 7px 11px;
+            border-radius: 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 550;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+            transition: 0.15s ease;
+        }
+
+        .input-tool-btn:hover {
+            color: var(--text-primary);
+            background: var(--bg-card-hover);
+        }
+
+        .input-tool-btn.active {
+            background: #ef4444;
+            color: #ffffff;
+            border-color: #ef4444;
+            animation: pulseRecord 1.5s infinite;
+        }
+
+        @keyframes pulseRecord {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            70% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        #user-input {
+            flex: 1;
+            min-width: 0;
+            padding: 9px 8px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .send-action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: var(--accent);
+            color: var(--accent-text);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 700;
+            transition: 0.15s ease;
+            flex-shrink: 0;
+        }
+
+        .send-action-btn:hover {
+            opacity: 0.9;
+            transform: scale(1.04);
+        }
+
+        .input-footer-caption {
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+
+        /* =========================================================
+           AYARLAR: ANAHTARLAR (SWITCH) & BİLDİRİM TOAST
+        ========================================================= */
+        .modal-box { max-height: 92vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+
+        .settings-section { margin-bottom: 18px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+        .settings-section h4 { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+
+        .switch-row {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 12px; padding: 9px 0;
+        }
+        .switch-row .switch-text { flex: 1; min-width: 0; }
+        .switch-row .switch-title { font-size: 13px; font-weight: 600; color: var(--text-primary); display: block; }
+        .switch-row .switch-desc { font-size: 11px; color: var(--text-muted); display: block; margin-top: 2px; line-height: 1.45; }
+
+        .switch { position: relative; width: 44px; height: 26px; flex-shrink: 0; }
+        .switch input { opacity: 0; width: 100%; height: 100%; position: absolute; inset: 0; margin: 0; cursor: pointer; z-index: 2; }
+        .switch .track {
+            position: absolute; inset: 0; border-radius: 26px;
+            background: var(--bg-input); border: 1px solid var(--border);
+            transition: background 0.18s ease, border-color 0.18s ease;
+        }
+        .switch .track::after {
+            content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px;
+            border-radius: 50%; background: var(--text-secondary);
+            transition: transform 0.18s ease, background 0.18s ease;
+        }
+        .switch input:checked + .track { background: var(--accent); border-color: var(--accent); }
+        .switch input:checked + .track::after { transform: translateX(18px); background: var(--accent-text); }
+        .switch input:focus-visible + .track { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+        .inline-select {
+            background: var(--bg-input); color: var(--text-primary); border: 1px solid var(--border);
+            border-radius: 8px; padding: 6px 8px; font-size: 12px; outline: none;
+        }
+        .settings-status { font-size: 11px; color: var(--text-secondary); margin-top: 6px; line-height: 1.5; }
+        .settings-mini-btn {
+            background: transparent; color: var(--text-primary); border: 1px solid var(--border);
+            border-radius: 8px; padding: 7px 10px; font-size: 12px; cursor: pointer; margin-top: 8px;
+        }
+
+
+        .volume-row { padding: 6px 0 4px; }
+        .volume-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+        .volume-value { font-size: 13px; font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+        .volume-controls { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+        .volume-controls input[type="range"] { flex: 1; min-width: 0; accent-color: var(--accent); height: 28px; cursor: pointer; }
+
+        #toast-stack {
+            position: fixed; left: 0; right: 0; top: calc(env(safe-area-inset-top, 0px) + 12px);
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
+            z-index: 300; pointer-events: none; padding: 0 12px;
+        }
+        .toast {
+            pointer-events: auto; max-width: 440px; width: 100%;
+            background: var(--bg-card); color: var(--text-primary);
+            border: 1px solid var(--border); border-radius: 14px;
+            padding: 11px 14px; font-size: 13px; line-height: 1.45;
+            box-shadow: 0 12px 34px rgba(0,0,0,0.55); cursor: pointer;
+            animation: fadeIn 0.2s ease;
+        }
+        .toast strong { display: block; font-size: 13px; margin-bottom: 2px; }
+        .proactive-tag { font-size: 10px; color: var(--text-secondary); margin-left: 6px; }
+        @media (prefers-reduced-motion: reduce) { .toast, .switch .track, .switch .track::after { animation: none; transition: none; } }
+
+        /* =========================================================
+           MODALS (SETTINGS, IMAGE STUDIO, LIGHTBOX)
+        ========================================================= */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.78);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .modal-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            width: 100%;
+            max-width: 480px;
+            padding: 22px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+            animation: fadeIn 0.2s ease;
+        }
+
+        .modal-box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .modal-box-header h3 {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: none;
+            font-size: 18px;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .form-row {
+            margin-bottom: 14px;
+        }
+
+        .form-row label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .form-row input, .form-row textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            outline: none;
+            font-size: 13px;
+        }
+
+        .pill-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .choice-pill {
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.15s ease;
+        }
+
+        .choice-pill.active {
+            background: var(--accent);
+            color: var(--accent-text);
+            border-color: var(--accent);
+            font-weight: 600;
+        }
+
+        .modal-action-btn {
+            width: 100%;
+            padding: 11px;
+            border-radius: 10px;
+            background: var(--accent);
+            color: var(--accent-text);
+            font-weight: 650;
+            font-size: 13px;
+            border: none;
+            cursor: pointer;
+            transition: 0.15s ease;
+        }
+        .modal-action-btn:hover { opacity: 0.9; }
+
+        /* =========================================================
+           YENİ GİRİŞ / HESAP EKRANI
+        ========================================================= */
+        .auth-box {
+            max-width: 430px;
+            padding: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+            border: 1px solid var(--border-hover);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.85);
+        }
+
+        .auth-close-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 3;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(0,0,0,0.25);
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.15s ease;
+        }
+
+        .auth-close-btn:hover {
+            color: var(--text-primary);
+            background: rgba(0,0,0,0.45);
+        }
+
+        .auth-hero {
+            position: relative;
+            padding: 28px 24px 22px;
+            text-align: center;
+            background:
+                radial-gradient(circle at 50% 0%, rgba(59,130,246,0.30), transparent 62%),
+                linear-gradient(180deg, rgba(255,255,255,0.06), transparent);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .auth-hero-logo {
+            width: 52px;
+            height: 52px;
+            margin: 0 auto 12px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+            color: #fff;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            box-shadow: 0 10px 28px rgba(59,130,246,0.4);
+        }
+
+        .auth-hero h2 {
+            margin: 0 0 6px;
+            font-size: 19px;
+            font-weight: 750;
+            letter-spacing: -0.2px;
+        }
+
+        .auth-hero p {
+            margin: 0;
+            font-size: 12px;
+            line-height: 1.55;
+            color: var(--text-secondary);
+        }
+
+        .auth-body {
+            padding: 18px 22px 22px;
+        }
+
+        .auth-panel { display: none; }
+        .auth-panel.active { display: block; animation: fadeIn 0.18s ease; }
+
+        .auth-option-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 11px 13px;
+            margin-bottom: 9px;
+            border-radius: 11px;
+            border: 1px solid var(--border);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-family: inherit;
+            cursor: pointer;
+            text-align: left;
+            transition: 0.15s ease;
+        }
+
+        .auth-option-btn:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-card-hover);
+            transform: translateY(-1px);
+        }
+
+        .auth-option-btn.google {
+            background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
+            border-color: rgba(255,255,255,0.16);
+        }
+
+        .auth-option-icon {
+            width: 30px;
+            height: 30px;
+            flex-shrink: 0;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 800;
+            background: rgba(255,255,255,0.09);
+        }
+
+        .auth-option-btn.google .auth-option-icon {
+            background: #fff;
+            color: #4285f4;
+        }
+
+        .auth-option-text {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .auth-option-text strong {
+            font-size: 13px;
+            font-weight: 650;
+        }
+
+        .auth-option-text small {
+            font-size: 10.5px;
+            color: var(--text-muted);
+        }
+
+        .auth-option-arrow {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin: 13px 0 11px;
+            color: var(--text-muted);
+            font-size: 10.5px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            font-weight: 650;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .auth-email-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .auth-ghost-btn {
+            padding: 10px;
+            border-radius: 9px;
+            border: 1px solid var(--border);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 12.5px;
+            font-weight: 650;
+            cursor: pointer;
+            transition: 0.15s ease;
+        }
+
+        .auth-ghost-btn:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-card-hover);
+        }
+
+        .auth-ghost-btn.primary {
+            background: var(--accent);
+            color: var(--accent-text);
+            border-color: transparent;
+        }
+
+        .auth-ghost-btn.primary:hover { opacity: 0.92; }
+
+        .auth-guest-btn {
+            width: 100%;
+            margin-top: 14px;
+            padding: 9px;
+            border-radius: 9px;
+            border: 1px dashed var(--border-hover);
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.15s ease;
+        }
+
+        .auth-guest-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--accent);
+        }
+
+        .auth-trust {
+            margin: 10px 0 0;
+            text-align: center;
+            font-size: 10px;
+            line-height: 1.5;
+            color: var(--text-muted);
+        }
+
+        .auth-back-btn {
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 11.5px;
+            font-weight: 600;
+            padding: 0 0 10px;
+            cursor: pointer;
+        }
+
+        .auth-back-btn:hover { color: var(--text-primary); }
+
+        .auth-form-title {
+            margin: 0 0 3px;
+            font-size: 16px;
+            font-weight: 750;
+        }
+
+        .auth-form-sub {
+            margin: 0 0 14px;
+            font-size: 11.5px;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+
+        .auth-error {
+            display: none;
+            margin: 0 0 10px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-size: 11.5px;
+            line-height: 1.45;
+            color: #fca5a5;
+            background: rgba(239,68,68,0.12);
+            border: 1px solid rgba(239,68,68,0.3);
+        }
+
+        .auth-error.visible { display: block; }
+
+        .auth-submit {
+            width: 100%;
+            padding: 11px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            color: #fff;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.15s ease;
+        }
+
+        .auth-submit:hover { opacity: 0.92; }
+        .auth-submit:disabled { opacity: 0.55; cursor: wait; }
+
+        .auth-switch {
+            margin-top: 12px;
+            text-align: center;
+            font-size: 11.5px;
+            color: var(--text-secondary);
+        }
+
+        .auth-switch button {
+            border: none;
+            background: none;
+            color: var(--accent);
+            font-family: inherit;
+            font-size: 11.5px;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 2px;
+        }
+
+        .auth-switch button:hover { text-decoration: underline; }
+
+        /* LIGHTBOX */
+        #lightbox-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            cursor: zoom-out;
+        }
+
+        #lightbox-modal img {
+            max-width: 95vw;
+            max-height: 95vh;
+            border-radius: 10px;
+        }
+
+        /* =========================================================
+           KİŞİLİK & SES & RENK & CANLI SES MODU (VOICE ORB) STILLERI
+        ========================================================= */
+
+        /* 1. Kişilik Kartları */
+        .personality-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .personality-card {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 14px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .personality-card:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-card-hover);
+            transform: translateY(-2px);
+        }
+
+        .personality-card.active {
+            border-color: var(--accent);
+            background: var(--active-glow, rgba(255, 255, 255, 0.05));
+            box-shadow: 0 0 14px var(--active-glow, rgba(255, 255, 255, 0.08));
+        }
+
+        .personality-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .personality-title {
+            font-weight: 700;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-primary);
+        }
+
+        .personality-badge {
+            font-size: 10px;
+            padding: 2px 7px;
+            border-radius: 6px;
+            background: var(--bg-input);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            font-weight: 600;
+        }
+
+        .personality-card.active .personality-badge {
+            background: var(--accent);
+            color: var(--accent-text);
+            border-color: var(--accent);
+        }
+
+        .personality-desc {
+            font-size: 11.5px;
+            color: var(--text-secondary);
+            line-height: 1.45;
+        }
+
+        /* 2. Ses Kartları */
+        .voice-section-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 12px 0 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .voice-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 10px;
+        }
+
+        .voice-card {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            padding: 10px 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .voice-card:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-card-hover);
+        }
+
+        .voice-card.active {
+            border-color: var(--accent);
+            background: var(--active-glow, rgba(255, 255, 255, 0.05));
+            box-shadow: 0 0 12px var(--active-glow, rgba(255, 255, 255, 0.08));
+        }
+
+        .voice-card-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .voice-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .voice-info {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .voice-name {
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .voice-meta {
+            font-size: 10.5px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .voice-preview-btn {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            border-radius: 8px;
+            padding: 5px 9px;
+            font-size: 11.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            flex-shrink: 0;
+        }
+
+        .voice-preview-btn:hover {
+            background: var(--accent);
+            color: var(--accent-text);
+            border-color: var(--accent);
+        }
+
+        .voice-badge {
+            display: inline-block;
+            margin-top: 3px;
+            padding: 1px 6px;
+            border-radius: 999px;
+            font-size: 9.5px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            width: fit-content;
+        }
+
+        .voice-badge-ok {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.35);
+        }
+
+        .voice-badge-off {
+            background: rgba(239, 68, 68, 0.12);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .voice-card.voice-unavailable {
+            opacity: 0.68;
+        }
+
+        .voice-engine-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 8px 0 10px;
+            flex-wrap: wrap;
+        }
+
+        #voice-engine-status {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        #voice-engine-status[data-state="ok"] { color: #10b981; }
+        #voice-engine-status[data-state="warn"] { color: #f59e0b; }
+        #voice-engine-status[data-state="error"] { color: #ef4444; }
+
+        /* 3. Renk Seçenekleri */
+        .color-palette-wrap {
+            margin-top: 10px;
+        }
+
+        .color-swatches {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .color-circle {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .color-circle:hover {
+            transform: scale(1.18);
+        }
+
+        .color-circle.active {
+            border-color: #ffffff;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.6), 0 0 14px currentColor;
+            transform: scale(1.14);
+        }
+
+        .color-circle.active::after {
+            content: "✓";
+            font-size: 14px;
+            font-weight: 900;
+            color: #ffffff;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.85);
+        }
+
+        .color-custom-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-top: 6px;
+        }
+
+        .color-picker-box {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            padding: 2px;
+            background: var(--bg-input);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .color-picker-box input[type="color"] {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .hex-code-input {
+            width: 130px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            font-family: monospace;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            outline: none;
+        }
+
+        .hex-code-input:focus {
+            border-color: var(--accent);
+        }
+
+        /* 4. CANLI SES MODU (VOICE ORB OVERLAY) - GÖRSELDEKİ BİREBİR TASARIM */
+        #voice-mode-modal {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            background: #000000;
+            z-index: 999999;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 20px 28px;
+            box-sizing: border-box;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+            animation: voiceModalFadeIn 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes voiceModalFadeIn {
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .voice-topbar {
+            width: 100%;
+            max-width: 520px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 20;
+        }
+
+        .voice-icon-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #1c1c1e;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+
+        .voice-icon-btn:hover {
+            background: #2a2a2d;
+            transform: scale(1.06);
+        }
+
+        .voice-hamburger-bar {
+            width: 18px;
+            height: 2px;
+            background: #e5e5e5;
+            border-radius: 2px;
+        }
+
+        .voice-top-right {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .voice-green-dot {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: #22c55e;
+            border: 2px solid #000000;
+            box-shadow: 0 0 8px #22c55e;
+            pointer-events: none;
+        }
+
+        /* ORB CENTER AREA */
+        .voice-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .voice-orb-wrapper {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Pulsing Ripple Rings */
+        .voice-ripple {
+            position: absolute;
+            border-radius: 50%;
+            border: 1.5px solid rgba(130, 180, 255, 0.28);
+            inset: 0;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .voice-orb-wrapper.listening .voice-ripple-1 {
+            animation: orbWave 2.6s infinite cubic-bezier(0.1, 0.6, 0.4, 1);
+        }
+        .voice-orb-wrapper.listening .voice-ripple-2 {
+            animation: orbWave 2.6s infinite cubic-bezier(0.1, 0.6, 0.4, 1) 0.85s;
+        }
+        .voice-orb-wrapper.listening .voice-ripple-3 {
+            animation: orbWave 2.6s infinite cubic-bezier(0.1, 0.6, 0.4, 1) 1.7s;
+        }
+
+        @keyframes orbWave {
+            0% { transform: scale(0.9); opacity: 0.65; border-color: rgba(130, 180, 255, 0.5); }
+            50% { opacity: 0.35; }
+            100% { transform: scale(1.65); opacity: 0; border-color: rgba(130, 180, 255, 0); }
+        }
+
+        /* The Sky-Cloud Circular Orb */
+        .voice-orb {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 0 55px rgba(100, 150, 255, 0.38), 0 0 110px rgba(120, 170, 255, 0.18);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+            background: radial-gradient(circle at 50% 12%, #6892f7 0%, #7ea5fc 28%, #9ab6ff 48%, #c5d8ff 68%, #f0f4ff 88%, #ffffff 100%);
+        }
+
+        /* Cloud Texture Layer inside Orb */
+        .voice-orb::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: 
+                radial-gradient(ellipse at 35% 75%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.7) 45%, transparent 70%),
+                radial-gradient(ellipse at 70% 70%, rgba(255, 255, 255, 0.92) 0%, rgba(240, 245, 255, 0.65) 40%, transparent 75%),
+                radial-gradient(ellipse at 50% 85%, #ffffff 0%, rgba(255, 255, 255, 0.92) 50%, transparent 80%),
+                radial-gradient(circle at 50% 50%, transparent 35%, rgba(130, 170, 255, 0.28) 100%);
+            filter: blur(8px);
+            opacity: 0.94;
+            animation: cloudsFloat 7s infinite alternate ease-in-out;
+        }
+
+        .voice-orb::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle at 50% 8%, rgba(255, 255, 255, 0.55) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        @keyframes cloudsFloat {
+            0% { transform: scale(1) translateY(0); }
+            100% { transform: scale(1.06) translateY(-6px); }
+        }
+
+        /* State Animations */
+        .voice-orb-wrapper.speaking .voice-orb {
+            animation: orbSpeak 1.4s infinite alternate ease-in-out;
+            box-shadow: 0 0 75px rgba(100, 160, 255, 0.7), 0 0 130px rgba(120, 180, 255, 0.4);
+        }
+
+        @keyframes orbSpeak {
+            0% { transform: scale(0.96); }
+            50% { transform: scale(1.07); }
+            100% { transform: scale(1.02); }
+        }
+
+        .voice-orb-wrapper.thinking .voice-orb {
+            animation: orbThink 1.3s infinite ease-in-out;
+        }
+
+        @keyframes orbThink {
+            0%, 100% { transform: scale(0.95); opacity: 0.85; filter: brightness(1.05); }
+            50% { transform: scale(1.03); opacity: 1; filter: brightness(1.25); }
+        }
+
+        /* Status Pill & Transcript */
+        .voice-status-pill {
+            margin-top: 24px;
+            padding: 7px 18px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #f0f0f0;
+            font-size: 13.5px;
+            font-weight: 550;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .voice-transcript-box {
+            margin-top: 14px;
+            max-width: 480px;
+            padding: 0 16px;
+            color: #9e9ea3;
+            font-size: 14px;
+            line-height: 1.5;
+            text-align: center;
+            min-height: 44px;
+            word-break: break-word;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Bottom Controls Bar */
+        .voice-bottom-bar {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            position: relative;
+            z-index: 20;
+        }
+
+        .voice-ask-pill {
+            flex: 1;
+            background: #1c1c1e;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 13px 20px;
+            color: #e5e5e5;
+            font-size: 14.5px;
+            font-weight: 550;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: background 0.15s ease, transform 0.15s ease;
+        }
+
+        .voice-ask-pill:hover {
+            background: #2a2a2d;
+            transform: scale(1.02);
+        }
+
+        .voice-pill-plus {
+            font-size: 20px;
+            line-height: 1;
+            font-weight: 300;
+            color: #a0a0a0;
+        }
+
+        .voice-btn-round {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.15s ease, opacity 0.15s ease;
+            flex-shrink: 0;
+        }
+
+        .voice-btn-round:hover {
+            transform: scale(1.07);
+        }
+
+        .voice-mic-btn {
+            background: #1c1c1e;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            font-size: 20px;
+        }
+
+        .voice-mic-btn.muted {
+            background: #3d1515;
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        .voice-close-btn {
+            background: #ffffff;
+            border: none;
+            color: #000000;
+            font-size: 22px;
+            font-weight: 700;
+            box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2);
+        }
+
+        /* BACKDROP SHADOW FOR MOBILE SIDEBAR */
+        #sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 40;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* =========================================================
+           PLANS & SUBSCRIPTION MODAL SYSTEM (BLACK & WHITE MODERN)
+        ========================================================= */
+        #plans-modal .modal-box {
+            max-width: 1100px;
+            width: 95vw;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+        }
+
+        .plans-nav-tabs {
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+            margin-bottom: 18px;
+            overflow-x: auto;
+            flex-shrink: 0;
+        }
+
+        .plans-nav-tab {
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .plans-nav-tab:hover {
+            color: var(--text-primary);
+            background: var(--bg-card-hover);
+        }
+
+        .plans-nav-tab.active {
+            background: var(--accent);
+            color: var(--accent-text);
+            border-color: var(--accent);
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            overflow-y: auto;
+            padding: 4px;
+        }
+
+        .plan-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-hover);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+        }
+
+        .plan-card.recommended {
+            border: 1.5px solid var(--accent);
+            background: linear-gradient(180deg, var(--bg-card) 0%, rgba(255, 255, 255, 0.03) 100%);
+        }
+
+        .plan-card.active-plan {
+            border: 2px solid #10b981;
+        }
+
+        .plan-badge-top {
+            position: absolute;
+            top: -10px;
+            right: 18px;
+            background: var(--accent);
+            color: var(--accent-text);
+            font-size: 10.5px;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 20px;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        .plan-badge-top.active-badge {
+            background: #10b981;
+            color: #ffffff;
+        }
+
+        .plan-header {
+            margin-bottom: 12px;
+        }
+
+        .plan-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: -0.3px;
+        }
+
+        .plan-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.45;
+            min-height: 34px;
+        }
+
+        .plan-price-wrap {
+            margin: 14px 0 16px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+
+        .plan-price-num {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .plan-price-period {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .plan-features-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex: 1;
+        }
+
+        .plan-feature-item {
+            font-size: 12px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.4;
+        }
+
+        .plan-feature-check {
+            color: #10b981;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .plan-btn-select {
+            width: 100%;
+            padding: 11px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+            transition: 0.2s ease;
+        }
+
+        .plan-btn-select:hover {
+            background: var(--accent);
+            color: var(--accent-text);
+            border-color: var(--accent);
+        }
+
+        .plan-btn-select.active-btn {
+            background: #10b981;
+            color: #ffffff;
+            border-color: #10b981;
+            cursor: default;
+        }
+
+        /* COMPARISON TABLE */
+        .comparison-wrapper {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-card);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            text-align: left;
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        .comparison-table th {
+            background: var(--bg-sidebar);
+            font-weight: 700;
+            color: var(--text-primary);
+            position: sticky;
+            top: 0;
+        }
+
+        .comparison-table tr:hover td {
+            background: var(--bg-card-hover);
+        }
+
+        /* SMART UI: CHECKLIST */
+        .smart-checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .smart-checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-card);
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .smart-checklist-item input {
+            margin-top: 2px;
+            accent-color: var(--accent);
+        }
+
+        .smart-checklist-item.done span {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .smart-checklist-progress {
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        /* SMART UI: PROGRESS TRACKER */
+        .smart-progress-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .smart-progress-head {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12.5px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            gap: 8px;
+        }
+
+        .smart-progress-bar {
+            height: 7px;
+            background: var(--bg-base);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .smart-progress-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .smart-progress-detail {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        /* SMART UI: DATA TABLE */
+        .data-table-wrapper {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg-card);
+        }
+
+        .smart-data-caption {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin: 0 0 8px;
+        }
+
+        /* CUSTOM PLAN BUILDER */
+        .custom-builder-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 28px;
+        }
+
+        @media (max-width: 860px) {
+            .custom-builder-box {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .custom-slider-row {
+            margin-bottom: 20px;
+        }
+
+        .custom-slider-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .custom-slider-val {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .custom-breakdown-card {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* =========================================================
+           SMART UI INTERACTIVE WIDGETS IN CHAT
+        ========================================================= */
+        .smart-ui-card {
+            margin-top: 12px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            max-width: 580px;
+            width: 100%;
+        }
+
+        .smart-ui-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+            margin-bottom: 14px;
+        }
+
+        .smart-ui-title {
+            font-size: 14px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .smart-ui-badge {
+            font-size: 10px;
+            padding: 2px 7px;
+            border-radius: 12px;
+            background: var(--border);
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        /* SMART UI: CALCULATOR */
+        .smart-calc-display {
+            background: var(--bg-base);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 14px;
+            font-family: monospace;
+            font-size: 20px;
+            text-align: right;
+            margin-bottom: 12px;
+            min-height: 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-x: auto;
+        }
+
+        .smart-calc-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .smart-calc-btn {
+            padding: 12px;
+            border-radius: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.15s ease;
+        }
+
+        .smart-calc-btn:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .smart-calc-btn.op-btn {
+            background: var(--border);
+            color: var(--accent);
+        }
+
+        .smart-calc-btn.eq-btn {
+            background: var(--accent);
+            color: var(--accent-text);
+            grid-column: span 2;
+        }
+
+        /* SMART UI: TASK MANAGER */
+        .smart-task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 14px;
+            max-height: 240px;
+            overflow-y: auto;
+        }
+
+        .smart-task-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            font-size: 13px;
+        }
+
+        .smart-task-item.done {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .smart-task-add-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .smart-task-input {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: var(--bg-base);
+            border: 1px solid var(--border);
+            font-size: 13px;
+        }
+
+        /* SMART UI: BUDGET PLANNER */
+        .smart-budget-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .smart-budget-stat {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .smart-budget-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 2px;
+        }
+
+        .smart-budget-val {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .smart-ui-action-bar {
+            margin-top: 14px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .smart-ui-send-chat-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 11.5px;
+            font-weight: 600;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: 0.15s ease;
+        }
+
+        .smart-ui-send-chat-btn:hover {
+            background: var(--accent);
+            color: var(--accent-text);
+        }
+
+        /* ATTACHED FILE PILL */
+        #attached-doc-pill {
+            display: none;
+            padding: 6px 12px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            font-size: 12px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* =========================================================
+           CANLI ARAMA KAYNAKÇALARI
+        ========================================================= */
+        .citations-block {
+            margin-top: 8px;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            font-size: 12px;
+            max-width: 720px;
+        }
+
+        .citations-title {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-secondary);
+        }
+
+        .citations-block ol {
+            margin: 0 0 0 18px;
+            padding: 0;
+        }
+
+        .citations-block li {
+            margin-bottom: 6px;
+        }
+
+        .citations-block a {
+            color: var(--link-accent, #7aa2ff);
+            text-decoration: none;
+            word-break: break-word;
+        }
+
+        .citations-block a:hover {
+            text-decoration: underline;
+        }
+
+        .citation-meta {
+            display: block;
+            color: var(--text-muted);
+            font-size: 11px;
+            margin-top: 2px;
+            word-break: break-word;
+        }
+
+        /* =========================================================
+           MESAJ EYLEMLERİ & SAĞ TIK / BASILI TUT MENÜSÜ
+        ========================================================= */
+        .message-actions {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 5px;
+            opacity: 0;
+            transform: translateY(-2px);
+            transition: opacity 0.15s ease, transform 0.15s ease;
+        }
+
+        .message-row:hover .message-actions,
+        .message-row:focus-within .message-actions {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .msg-action-btn {
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: 0.15s ease;
+        }
+
+        .msg-action-btn svg {
+            width: 15px;
+            height: 15px;
+            pointer-events: none;
+        }
+
+        .msg-action-btn:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border);
+            color: var(--text-primary);
+        }
+
+        .msg-action-btn:active {
+            transform: scale(0.94);
+        }
+
+        #message-context-menu {
+            position: fixed;
+            z-index: 9999;
+            min-width: 200px;
+            max-width: min(86vw, 260px);
+            padding: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55);
+            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(14px);
+            animation: contextMenuIn 0.12s ease;
+        }
+
+        #message-context-menu[hidden] {
+            display: none !important;
+        }
+
+        @keyframes contextMenuIn {
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .msg-context-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            padding: 9px 11px;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 500;
+            text-align: left;
+            cursor: pointer;
+            transition: background 0.12s ease, color 0.12s ease;
+        }
+
+        .msg-context-item svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            opacity: 0.85;
+        }
+
+        .msg-context-item[hidden] {
+            display: none !important;
+        }
+
+        .msg-context-item:hover,
+        .msg-context-item:focus-visible {
+            background: var(--bg-card-hover);
+            outline: none;
+        }
+
+        .msg-context-item.danger {
+            color: #ef4444;
+        }
+
+        .msg-context-item.danger:hover,
+        .msg-context-item.danger:focus-visible {
+            background: rgba(239, 68, 68, 0.12);
+        }
+
+        .msg-context-sep {
+            height: 1px;
+            margin: 4px 6px;
+            background: var(--border);
+            flex-shrink: 0;
+        }
+
+        /* =========================================================
+           ERİŞİLEBİLİRLİK: KLAVYE ODAĞI & HAREKET AZALTMA
+        ========================================================= */
+        button:focus-visible,
+        .starter-chip:focus-visible,
+        .personality-card:focus-visible,
+        .agent-nav-item:focus-visible,
+        .history-item:focus-visible,
+        a:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* =========================================================
+           RESPONSIVE: TABLET & MOBİL OPTİMİZASYONU
+        ========================================================= */
+        @media (max-width: 900px) {
+            #sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: min(86vw, 310px);
+                margin-left: 0 !important;
+                transform: translateX(-102%);
+                transition: transform var(--transition-speed) ease;
+                box-shadow: 0 0 60px rgba(0, 0, 0, 0.65);
+                padding-top: env(safe-area-inset-top);
+                padding-bottom: env(safe-area-inset-bottom);
+                will-change: transform;
+            }
+
+            #sidebar.mobile-open {
+                transform: translateX(0);
+            }
+
+            #sidebar-overlay.active {
+                display: block;
+                background: rgba(0, 0, 0, 0.62);
+                -webkit-backdrop-filter: blur(2px);
+                backdrop-filter: blur(2px);
+                animation: fadeIn 0.18s ease;
+            }
+
+            .chat-topbar {
+                padding: 0 10px;
+                gap: 8px;
+            }
+
+            .topbar-left {
+                gap: 8px;
+                min-width: 0;
+                flex: 1;
+            }
+
+            .topbar-right {
+                gap: 6px;
+                flex-shrink: 0;
+            }
+
+            .current-agent-badge {
+                max-width: 42vw;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            #chat-box {
+                padding: 16px 12px 12px;
+            }
+
+            .chat-content-wrap {
+                gap: 16px;
+            }
+
+            .message-bubble {
+                max-width: 92%;
+                font-size: 14px;
+                padding: 12px 15px;
+            }
+
+            .msg-meta {
+                flex-wrap: wrap;
+                row-gap: 2px;
+            }
+
+            .modal-box {
+                max-height: calc(100dvh - 24px);
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .personality-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .chat-input-bar-container {
+                padding: 8px 10px calc(12px + env(safe-area-inset-bottom));
+            }
+
+            .input-footer-caption {
+                display: none;
+            }
+
+            .message-actions {
+                opacity: 0.85;
+                transform: none;
+            }
+
+            .msg-action-btn {
+                width: 34px;
+                height: 34px;
+            }
+
+            .msg-action-btn svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            .msg-context-item {
+                min-height: 44px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .chat-topbar {
+                height: 50px;
+            }
+
+            .top-action-btn {
+                padding: 7px 9px;
+            }
+
+            .top-action-btn > span:not(:first-child) {
+                display: none;
+            }
+
+            .mode-topbar-indicator {
+                padding: 3px 8px;
+                font-size: 10.5px;
+                max-width: 34vw;
+                overflow: hidden;
+            }
+
+            #mode-topbar-title {
+                display: none;
+            }
+
+            .chat-input-inner {
+                gap: 5px;
+                padding: 5px 7px;
+                border-radius: 14px;
+            }
+
+            .input-tool-btn {
+                padding: 7px 8px;
+                font-size: 13px;
+            }
+
+            #user-input {
+                font-size: 16px; /* iOS'ta otomatik yakınlaştırmayı engeller */
+                padding: 7px 4px;
+            }
+
+            .send-action-btn {
+                width: 34px;
+                height: 34px;
+                flex-shrink: 0;
+            }
+
+            .personality-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .image-card {
+                max-width: 100%;
+            }
+
+            .image-card-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .image-card-footer > div {
+                max-width: 100% !important;
+            }
+
+            .starter-hero {
+                padding: 18px 4px;
+            }
+
+            .starter-hero h2 {
+                font-size: 19px;
+            }
+
+            .starter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .code-header {
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+
+            .smart-ui-card {
+                padding: 12px;
+            }
+
+            .modal-box {
+                padding: 16px;
+                border-radius: 14px;
+            }
+
+            .smart-calc-grid {
+                gap: 6px;
+            }
+
+            .smart-calc-btn {
+                padding: 10px 6px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .topbar-right .top-action-btn {
+                padding: 7px;
+            }
+
+            .toggle-sidebar-btn {
+                width: 32px;
+                height: 32px;
+            }
+
+            .topbar-left {
+                gap: 6px;
+            }
+
+            .current-agent-badge {
+                max-width: 34vw;
+                font-size: 11px;
+            }
+
+            .message-bubble {
+                max-width: 95%;
+            }
+
+            .input-tool-btn {
+                padding: 6px;
+            }
+
+            #message-context-menu {
+                min-width: 180px;
+            }
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+            .message-actions {
+                opacity: 0.8;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+
+            #sidebar {
+                transition: none !important;
+            }
+        }
+
+        /* ============================================================
+           KONUM / HAVA / HARİTA (location_ui.js)
+           Siyah-beyaz premium tema ile uyumlu, mobil uyumlu kartlar.
+           ============================================================ */
+        .loc-card {
+            background: var(--bg-card, #141414);
+            border: 1px solid var(--border-color, #2a2a2a);
+            border-radius: 16px;
+            padding: 14px;
+            margin: 10px 0;
+            color: var(--text-primary, #f5f5f5);
+            font-size: 13px;
+        }
+
+        .loc-meta,
+        .loc-source,
+        .loc-facts,
+        .loc-actions,
+        .loc-tabs,
+        .loc-city-grid,
+        .loc-city-search {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .loc-meta { color: var(--text-secondary, #a3a3a3); font-size: 12px; margin-bottom: 10px; }
+
+        .loc-tabs { margin-bottom: 10px; border-bottom: 1px solid var(--border-color, #2a2a2a); padding-bottom: 8px; }
+
+        .loc-tab {
+            background: transparent;
+            border: 1px solid var(--border-color, #2a2a2a);
+            color: var(--text-secondary, #a3a3a3);
+            border-radius: 999px;
+            padding: 5px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+
+        .loc-tab.active,
+        .loc-tab:hover {
+            color: #fff;
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .loc-list { display: flex; flex-direction: column; gap: 10px; }
+
+        .loc-item {
+            border: 1px solid var(--border-color, #2a2a2a);
+            border-radius: 12px;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .loc-item-head { display: flex; justify-content: space-between; gap: 8px; }
+        .loc-item-title { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .loc-index { color: var(--text-secondary, #a3a3a3); font-size: 12px; }
+
+        .loc-badge {
+            font-size: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 999px;
+            padding: 2px 8px;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .loc-facts { margin-top: 6px; font-size: 12px; color: var(--text-secondary, #a3a3a3); }
+        .loc-address { margin-top: 4px; color: var(--text-secondary, #a3a3a3); font-size: 12px; line-height: 1.45; }
+        .loc-actions { margin-top: 8px; gap: 10px; }
+        .loc-phone { color: var(--text-secondary, #a3a3a3); font-size: 12px; }
+
+        .loc-link,
+        .loc-link-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 12px;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .loc-link:hover,
+        .loc-link-btn:hover { opacity: 0.75; }
+
+        .loc-primary-btn,
+        .loc-secondary-btn {
+            border-radius: 999px;
+            padding: 8px 16px;
+            font-size: 12.5px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+
+        .loc-primary-btn { background: #fff; color: #000; border: 1px solid #fff; font-weight: 600; }
+        .loc-primary-btn:hover { background: #e5e5e5; }
+        .loc-secondary-btn { background: transparent; color: #fff; border: 1px solid var(--border-color, #3a3a3a); }
+        .loc-secondary-btn:hover { border-color: #fff; }
+
+        .loc-warning,
+        .loc-note,
+        .loc-inline-status,
+        .loc-empty,
+        .loc-ranking-note {
+            font-size: 12px;
+            line-height: 1.5;
+            border-radius: 10px;
+            padding: 8px 10px;
+            margin-top: 8px;
+        }
+
+        .loc-warning { border: 1px solid rgba(255, 120, 120, 0.4); background: rgba(255, 80, 80, 0.08); color: #ffb4b4; }
+        .loc-note { border: 1px solid var(--border-color, #2a2a2a); color: var(--text-secondary, #a3a3a3); }
+        .loc-inline-status { color: var(--text-secondary, #a3a3a3); }
+        .loc-empty { border: 1px dashed var(--border-color, #3a3a3a); color: var(--text-secondary, #a3a3a3); }
+        .loc-ranking-note { color: var(--text-secondary, #a3a3a3); border-left: 2px solid rgba(255, 255, 255, 0.3); }
+
+        .loc-source {
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid var(--border-color, #2a2a2a);
+            font-size: 11px;
+            color: var(--text-secondary, #a3a3a3);
+            justify-content: space-between;
+        }
+
+        .loc-map-wrap { margin: 10px 0; }
+        .loc-map { width: 100%; height: 240px; border-radius: 12px; overflow: hidden; background: #0d0d0d; }
+        .loc-popup { color: #111; font-size: 12px; line-height: 1.4; max-width: 220px; }
+        .loc-popup strong { color: #000; }
+
+        .weather-now { display: flex; align-items: center; gap: 14px; }
+        .weather-icon { font-size: 40px; line-height: 1; }
+        .weather-temp { font-size: 34px; font-weight: 700; line-height: 1; }
+        .weather-condition { color: var(--text-secondary, #a3a3a3); font-size: 13px; margin-top: 4px; }
+        .weather-feels { color: var(--text-secondary, #a3a3a3); font-size: 12px; margin-top: 2px; }
+        .weather-metrics { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+        .weather-metric {
+            flex: 1 1 100px;
+            border: 1px solid var(--border-color, #2a2a2a);
+            border-radius: 10px;
+            padding: 8px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .weather-metric-label { font-size: 11px; color: var(--text-secondary, #a3a3a3); }
+        .weather-hours { display: flex; gap: 8px; overflow-x: auto; margin-top: 12px; padding-bottom: 4px; }
+        .weather-hour {
+            min-width: 58px;
+            border: 1px solid var(--border-color, #2a2a2a);
+            border-radius: 10px;
+            padding: 8px 6px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            font-size: 12px;
+        }
+        .weather-hour-rain { color: #8ab4ff; font-size: 11px; }
+        .weather-daily { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+        .weather-day { display: grid; grid-template-columns: 64px 26px 1fr auto auto; gap: 8px; align-items: center; font-size: 12px; }
+        .weather-day-name { color: var(--text-secondary, #a3a3a3); }
+        .weather-day-cond { color: var(--text-secondary, #a3a3a3); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .weather-range { display: flex; align-items: center; gap: 6px; min-width: 110px; }
+        .weather-bar { flex: 1; height: 5px; border-radius: 999px; background: rgba(255, 255, 255, 0.12); overflow: hidden; }
+        .weather-bar-fill { display: block; height: 100%; background: linear-gradient(90deg, #6fa8ff, #ffd166); border-radius: 999px; }
+        .weather-min { color: var(--text-secondary, #a3a3a3); }
+        .weather-max { font-weight: 600; }
+        .weather-day-rain { color: #8ab4ff; font-size: 11px; }
+
+        .route-summary { display: flex; flex-wrap: wrap; gap: 8px; }
+        .route-summary-item {
+            flex: 1 1 90px;
+            border: 1px solid var(--border-color, #2a2a2a);
+            border-radius: 10px;
+            padding: 8px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .route-summary-label { font-size: 11px; color: var(--text-secondary, #a3a3a3); }
+        .route-steps { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
+        .route-step { font-size: 12px; line-height: 1.45; }
+        .route-step-meta { color: var(--text-secondary, #a3a3a3); margin-left: 6px; font-size: 11px; }
+
+        .loc-info-head { display: flex; align-items: center; gap: 8px; }
+        .loc-coords { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: var(--text-secondary, #a3a3a3); margin-top: 4px; }
+        .loc-privacy-note { font-size: 11px; color: var(--text-secondary, #7a7a7a); margin: 10px 0 0; line-height: 1.45; }
+
+        .loc-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.72);
+            backdrop-filter: blur(6px);
+            z-index: 100000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .loc-modal-overlay[hidden] { display: none; }
+
+        .loc-modal {
+            width: min(520px, 100%);
+            max-height: 88vh;
+            overflow-y: auto;
+            background: var(--bg-card, #121212);
+            border: 1px solid var(--border-color, #2f2f2f);
+            border-radius: 20px;
+            padding: 18px;
+            color: var(--text-primary, #f5f5f5);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+        }
+        .loc-modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .loc-modal-header h3 { margin: 0; font-size: 17px; }
+        .loc-modal-close { background: none; border: none; color: var(--text-secondary, #a3a3a3); font-size: 18px; cursor: pointer; }
+        .loc-modal-text { font-size: 13px; line-height: 1.6; color: var(--text-secondary, #b3b3b3); margin: 0 0 12px; }
+        .loc-modal-body { display: flex; flex-direction: column; gap: 10px; }
+        .loc-divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 11px;
+            color: var(--text-secondary, #7a7a7a);
+            margin: 6px 0;
+        }
+        .loc-divider::before,
+        .loc-divider::after { content: ""; flex: 1; height: 1px; background: var(--border-color, #2a2a2a); }
+
+        .loc-city-grid { gap: 8px; }
+        .loc-city-btn {
+            background: transparent;
+            border: 1px solid var(--border-color, #333);
+            color: #fff;
+            border-radius: 999px;
+            padding: 6px 14px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .loc-city-btn:hover { border-color: #fff; }
+        .loc-city-search { gap: 8px; }
+        .loc-city-input {
+            flex: 1;
+            min-width: 120px;
+            background: var(--bg-input, #1a1a1a);
+            border: 1px solid var(--border-color, #333);
+            border-radius: 999px;
+            color: #fff;
+            padding: 8px 14px;
+            font-size: 13px;
+            outline: none;
+        }
+        .loc-city-input:focus { border-color: #fff; }
+        .loc-city-results { display: flex; flex-direction: column; gap: 6px; }
+        .loc-city-result {
+            text-align: left;
+            background: transparent;
+            border: 1px solid var(--border-color, #2a2a2a);
+            border-radius: 10px;
+            color: #fff;
+            padding: 8px 12px;
+            font-size: 12.5px;
+            cursor: pointer;
+        }
+        .loc-city-result:hover { border-color: #fff; background: rgba(255, 255, 255, 0.05); }
+
+        @media (max-width: 640px) {
+            .loc-map { height: 190px; }
+            .loc-card { padding: 12px; border-radius: 14px; }
+            .weather-day { grid-template-columns: 54px 22px 1fr auto; }
+            .weather-day-cond { display: none; }
+            .weather-day-rain { display: none; }
+            .loc-modal { padding: 14px; border-radius: 16px; }
+            .route-summary-item { flex: 1 1 70px; }
+        }
+    /* Workspace */
+        .model-toolbar {display:flex; flex-wrap:wrap; gap:14px; max-width:850px; margin:0 auto 8px; align-items:center}
+        .model-toolbar label {display:flex; align-items:center; gap:6px; font-size:12px; color:var(--text-secondary)}
+        .model-toolbar select {font:inherit; color:var(--text-primary); background:var(--bg-card); border:1px solid var(--border); padding:6px 9px; border-radius:8px}
+        #chat-box {background:var(--bg-main)}
+        #starter-hero {text-align:left; padding-block:clamp(16px,4vh,58px)}
+        #starter-hero .starter-hero-icon {width:42px;height:42px;margin:0 0 16px;background:var(--accent);color:var(--accent-text);border-radius:13px}
+        #starter-hero > p {margin:12px 0 26px}
+        #starter-hero h2 {font-family:Georgia,serif; font-weight:500; font-size:clamp(30px,4vw,58px);letter-spacing:-.045em}
+        #starter-hero .starter-chip {border-radius:5px;border-inline-start:3px solid var(--border-hover)}
+        #sidebar {border-right:1px solid var(--border);background:var(--bg-sidebar)}
+        #starter-hero .studio-feature {grid-row:1 / span 2; grid-column:2; display:flex; flex-direction:column; justify-content:flex-end; align-items:flex-start; min-height:170px; background:linear-gradient(0deg,rgba(0,0,0,.92),rgba(0,0,0,.06) 85%),url("studio-preview.webp") center/cover; border:0; border-radius:12px; color:white}
+        #starter-hero .studio-feature .starter-chip-title {font:600 22px Georgia,serif;color:white}
+        #starter-hero .studio-feature .starter-chip-desc {color:#f3f3f3}
+        @media(max-width:620px){#starter-hero .studio-feature{grid-column:auto;grid-row:auto;min-height:120px}}
+        html[data-green-theme]:not([data-personality-mode]) #chat-box {
+            background:radial-gradient(ellipse at 65% 12%,color-mix(in srgb,var(--accent) 15%,transparent),transparent 65%),var(--bg-main);
+        }
+        html[data-green-theme]:not([data-personality-mode]) #sidebar {
+            background:linear-gradient(175deg,color-mix(in srgb,var(--accent) 18%,var(--bg-sidebar)),var(--bg-sidebar) 75%);
+        }
+        #backend-status {display:inline-block;font-size:12px;margin:6px}
+
+        .starter-hero { width: 100%; max-width: 850px; margin-inline: auto; padding-inline: clamp(12px,3vw,32px); }
+        .starter-hero h2 { font-size: clamp(1.65rem,3.8vw,2.65rem); letter-spacing: -.045em; line-height: 1.12; text-wrap: balance; }
+        .starter-hero > p { max-width: 55ch; margin-inline: auto; line-height: 1.6; }
+        .starter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+        .starter-chip { font: inherit; text-align: left; color: var(--text-primary); border-radius: 15px; padding: 18px; background: var(--bg-card); }
+        .starter-chip-title, .starter-chip-desc { display:block; }
+        .starter-chip-title { letter-spacing: -.015em; }
+        .starter-chip-desc { line-height: 1.5; margin-top: 6px; }
+        .starter-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+        .chat-input-inner { border-radius: 18px; box-shadow: 0 8px 26px rgb(0 0 0 / .09); }
+        @media(max-width: 620px){.starter-grid{grid-template-columns:1fr}.starter-chip{padding:14px}.starter-hero{padding-inline:8px}}
+            .chat-input-inner { flex-direction: column; align-items: stretch; }
+        .composer-row { display: flex; align-items: center; gap: inherit; }
+        .chat-input-inner .model-toolbar { margin: 0; padding: 5px 0 0; border-top: 1px solid var(--border); }
+        .model-toolbar select { max-width: 42vw; }
+        #file-viewer { width: min(94vw, 680px); box-sizing: border-box; color: var(--text-primary); background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; }
+        #file-viewer::backdrop { background: rgb(0 0 0 / .65); }
+        #file-viewer h3 { overflow-wrap: anywhere; }
+        #file-viewer pre { max-height: 48vh; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; }
+        #file-viewer img { max-width: 100%; max-height: 45vh; object-fit: contain; }
+        #file-viewer button { margin: 4px; }
+    </style>
+</head>
+
+<body>
+
+    <!-- GIRLY MODE FLOATING PARTICLES (PASTEL SPARKS & HEARTS) -->
+    <div class="girly-particles-bg" id="girly-particles" aria-hidden="true">
+        <span class="girly-particle" style="left:8%; animation-delay:0s; animation-duration:12s;">🌸</span>
+        <span class="girly-particle" style="left:22%; animation-delay:4s; animation-duration:15s;">✨</span>
+        <span class="girly-particle" style="left:38%; animation-delay:8s; animation-duration:13s;">💖</span>
+        <span class="girly-particle" style="left:54%; animation-delay:2s; animation-duration:16s;">⭐</span>
+        <span class="girly-particle" style="left:68%; animation-delay:6s; animation-duration:11s;">🌸</span>
+        <span class="girly-particle" style="left:82%; animation-delay:10s; animation-duration:14s;">✨</span>
+        <span class="girly-particle" style="left:92%; animation-delay:3s; animation-duration:17s;">💕</span>
+    </div>
+
+    <div id="app-layout">
+
+        <!-- MOBILE SIDEBAR OVERLAY -->
+        <div id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+        <!-- =========================================================
+             1. LEFT SIDEBAR (CHATS, AGENTS, CONTROLS)
+        ========================================================= -->
+        <aside id="sidebar">
+
+            <!-- SIDEBAR HEADER -->
+            <div class="sidebar-header">
+                <div class="brand-logo-area" onclick="startNewChat()">
+                    <div class="brand-logo-icon">L</div>
+                    <span class="brand-title">Lumina AI</span>
+                    <span class="brand-badge">v3.2</span>
+                </div>
+                <button class="toggle-sidebar-btn" onclick="toggleSidebar()" title="Menüyü Kapat">
+                    ✕
+                </button>
+            </div>
+
+            <!-- NEW CHAT BUTTON -->
+            <button class="new-chat-btn" onclick="startNewChat()">
+                <span>➕</span> Yeni Sohbet
+            </button>
+
+            <!-- RECENT SESSIONS -->
+            <div class="sidebar-section-title" style="margin-top:10px;">Geçmiş Sohbetler</div>
+            <div class="history-list-area" id="history-container">
+                <!-- Javascript will populate saved chat history here -->
+            </div>
+
+            <!-- QUOTA BAR -->
+            <div id="quota-bar" style="
+                padding: 8px 14px 6px;
+                border-top: 1px solid var(--border);
+                flex-shrink: 0;
+            ">
+                <!-- Populated by JS fetchAndDisplayQuota() -->
+            </div>
+
+            <!-- SIDEBAR FOOTER -->
+            <div class="sidebar-footer">
+                <button class="sidebar-btn" style="width:100%; margin-bottom:6px; font-weight:700; background:linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)); border:1px solid var(--border-hover);" onclick="openPlansModal()" title="10 Abonelik Paketi ve Fiyatlar">
+                    💎 Paketler & Abonelik
+                </button>
+
+                <div class="footer-btn-grid">
+                    <button class="sidebar-btn" onclick="openSettingsModal()" title="Ayarlar (Backend & Groq API)">⚙️</button>
+                    <button class="sidebar-btn" onclick="cycleTheme()" title="Tema Değiştir">🌓</button>
+                    <button class="sidebar-btn" onclick="adjustFontSize(-0.1)" title="Yazıyı Küçült">A-</button>
+                    <button class="sidebar-btn" onclick="adjustFontSize(0.1)" title="Yazıyı Büyüt">A+</button>
+                </div>
+
+                <div class="account-card">
+                    <div class="account-main">
+                        <div class="account-avatar" id="sidebar-avatar">?</div>
+                        <div class="account-text">
+                            <span class="account-name" id="sidebar-user-name">Misafir Modu</span>
+                            <span class="account-sub" id="sidebar-user-sub">Giriş yap veya hesap oluştur</span>
+                        </div>
+                    </div>
+
+                    <div class="account-actions" id="account-guest-actions">
+                        <button class="account-action-btn account-google" onclick="openAuthModal({ provider: 'google' })" title="Google ile giriş yap">Google</button>
+                        <button class="account-action-btn" onclick="openAuthModal({ provider: 'email', mode: 'login' })" title="E-posta ile giriş yap veya kayıt ol">E-posta</button>
+                        <button class="account-action-btn" onclick="continueAsGuest()" title="Misafir olarak devam et">Misafir</button>
+                    </div>
+
+                    <button class="account-logout-btn" id="account-logout-btn" onclick="handleLogout()" title="Çıkış Yap" hidden>Çıkış Yap</button>
+                </div>
+            </div>
+
+        </aside>
+
+
+        <!-- =========================================================
+             2. MAIN CHAT AREA (100% FLUID VIEWPORT)
+        ========================================================= -->
+        <main id="main-area">
+
+            <!-- CHAT TOPBAR -->
+            <div class="chat-topbar">
+                <div class="topbar-left">
+                    <button class="toggle-sidebar-btn" onclick="toggleSidebar()" title="Menüyü Aç/Kapat">
+                        ☰
+                    </button>
+                    <div class="current-agent-badge">
+                        <span class="status-dot"></span>
+                        <span id="active-agent-title">Lumina Genel Asistan</span>
+                    </div>
+                    <div class="mode-topbar-indicator" id="mode-topbar-pill" style="display:none;" onclick="openSettingsModal()" title="Kişilik & Mod Ayarları">
+                        <span id="mode-topbar-icon">🌸</span>
+                        <span id="mode-topbar-title">Girly Mode</span>
+                    </div>
+                    <button class="mode-audio-btn" id="mode-audio-quick-btn" style="display:none;" onclick="toggleModeAudioQuick()" title="Mod Müziğini Aç / Kapat">
+                        <span id="mode-audio-quick-icon">🔇</span>
+                    </button>
+                </div>
+
+                <div class="topbar-right">
+                    <button class="top-action-btn" onclick="openLiveVoiceMode()" title="Canlı Sesli Sohbet (Daire Modu)">
+                        <span>🎙️</span> <span>Canlı Ses</span>
+                    </button>
+                    <button class="top-action-btn" onclick="openImageStudioModal()" title="Görsel Stüdyosu">
+                        <span>🎨</span> <span>Görsel</span>
+                    </button>
+                    <button class="top-action-btn" onclick="exportChat()" title="Sohbeti İndir">
+                        <span>📥</span> <span>İndir</span>
+                    </button>
+                    <button class="top-action-btn" onclick="clearCurrentChat()" title="Sohbeti Temizle">
+                        <span>🗑️</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CHAT BOX -->
+            <div id="chat-box">
+                <div class="chat-content-wrap" id="chat-stream">
+
+                    <!-- HERO / STARTER CARDS (Boş Sohbet Ekranı) -->
+                    <div class="starter-hero" id="starter-hero">
+                        <div class="starter-hero-icon">L</div>
+                        <h2>Bugün ne üzerinde çalışıyoruz?</h2>
+                        <p>Bir soru sorun, belge yükleyin veya Görsel Stüdyosu’nda bir fikri resme dönüştürün.</p>
+
+                        <div class="starter-grid">
+                            <button type="button" class="starter-chip" onclick="quickAsk('Zor bir matematik problemini adım adım açıkla: 3x^2 - 12x + 9 = 0')">
+                                <span class="starter-chip-title">📐 Matematik Çözücü</span>
+                                <span class="starter-chip-desc">Denklemleri analiz, formül ve ara sağlamalarla adım adım çözdürün.</span>
+                            </button>
+
+                            <button type="button" class="starter-chip" onclick="selectAgentMode('software'); quickAsk('/proje React ve FastAPI ile tam donanımlı bir Görev Takip uygulaması mimarisi ve çalışan kodları')">
+                                <span class="starter-chip-title">💻 Çoklu Ajan Yazılım</span>
+                                <span class="starter-chip-desc">Mimar, Geliştirici ve QA 3'lü ajan ekibiyle baştan sona kodlayın.</span>
+                            </button>
+
+                            <button type="button" class="starter-chip" onclick="triggerDocUpload()">
+                                <span class="starter-chip-title">📄 Belge & Dosya Analizi</span>
+                                <span class="starter-chip-desc">PDF, kod, tablo, arşiv ve medya dosyalarını güvenle analiz ettirin.</span>
+                            </button>
+
+                            <button type="button" class="starter-chip" onclick="selectAgentMode('research'); quickAsk('Güncel bir konuyu derinlemesine araştır ve güvenilir kaynaklarla özetle: yapay zeka ajanları 2026')">
+                                <span class="starter-chip-title">🌐 Derin Araştırma</span>
+                                <span class="starter-chip-desc">Güncel bilgiyi web ajanıyla tarayın, kaynaklı ve düzenli özet alın.</span>
+                            </button>
+
+                            <button type="button" class="starter-chip studio-feature" onclick="openImageStudioModal()">
+                                <span class="starter-chip-title">🎨 Görsel Stüdyosu</span>
+                                <span class="starter-chip-desc">Bir sahneyi tarif edin, tarzını seçin ve görselinizi oluşturun.</span>
+                            </button>
+
+                            <button type="button" class="starter-chip" onclick="quickAsk('Bugün biraz yoruldum, bir dost gibi dertleşmek istiyorum.')">
+                                <span class="starter-chip-title">☕ Samimi Dertleşme</span>
+                                <span class="starter-chip-desc">Gerçek bir insan sıcaklığında içini dök, tavsiye ve moral al.</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- BOTTOM INPUT BAR -->
+            <div class="chat-input-bar-container">
+                <div id="attached-doc-pill">
+                    <span id="attached-doc-name">📄 Belge eklendi</span>
+                    <button class="history-del-btn" style="opacity:1;" onclick="clearAttachedDoc()" title="Dosyayı kaldır">✕</button>
+                </div>
+
+                <div class="chat-input-inner">
+                    <div class="composer-row">
+                    <button class="input-tool-btn" id="attach-doc-btn" onclick="triggerDocUpload()" title="Belge / Kod Dosyası Yükle">
+                        📎
+                    </button>
+                    <input type="file" id="doc-upload-input" style="display:none;" onchange="openFileViewer(this)">
+
+                    <button class="input-tool-btn" onclick="openImageStudioModal()" title="Görsel Üret">
+                        🎨
+                    </button>
+
+                    <button class="input-tool-btn" id="mic-btn" onclick="openLiveVoiceMode()" title="Canlı Sesli Sohbet (Daire Modu)">
+                        🎤
+                    </button>
+
+                    <button class="input-tool-btn" id="tts-btn" onclick="toggleSpeechOutput()" title="Sesli Okuma (Açık/Kapalı)">
+                        🔊
+                    </button>
+
+                    <button class="input-tool-btn" id="location-btn" title="Konum, Hava Durumu ve Harita">
+                        📍
+                    </button>
+
+                    <input
+                        type="text"
+                        id="user-input"
+                        placeholder="Lumina'ya sor... (Matematik, kod, fikir veya görsel)"
+                        onkeydown="if(event.key === 'Enter' && !event.isComposing) sendMessage()"
+                        autocomplete="off"
+                    >
+
+                    <button class="send-action-btn" id="send-btn" onclick="sendMessage()" title="Gönder">
+                        ➤
+                    </button>
+                </div>
+
+                    <div class="model-toolbar"><label>Model <select id="chat-model"><option value="">Otomatik</option><option value="openai/gpt-oss-20b">Groq · GPT-OSS 20B</option><option value="openai/gpt-oss-120b">Groq · GPT-OSS 120B</option><option value="gemini-3.5-flash-lite">Gemini · Flash Lite</option><option value="gemini-3.8-flash">Gemini · Flash</option></select></label><label>Efor <select id="chat-effort" disabled><option value="low">Hızlı</option><option value="medium">Dengeli</option><option value="high">Derin</option></select></label></div>
+                </div>
+
+                <div class="input-footer-caption">
+                    Lumina AI Engine v3.2 • Güvenli ve Saygılı İletişim İlkeleri Devrede
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <!-- =========================================================
+         3. SETTINGS MODAL (GITHUB PAGES & BACKEND CONFIG)
+    ========================================================= -->
+    <div class="modal-backdrop" id="settings-modal">
+        <div class="modal-box">
+            <div class="modal-box-header">
+                <h3>⚙️ Lumina AI Ayarları</h3>
+                <button class="close-btn" onclick="closeSettingsModal()">✕</button>
+            </div>
+
+            <div class="settings-section">
+                <h4>👤 Hesap İşlemleri</h4>
+                <div class="switch-desc" id="account-status" style="margin-bottom:10px;">Giriş durumu kontrol ediliyor...</div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <button class="settings-mini-btn" onclick="resendVerificationEmail()">📧 Doğrulama e-postasını yeniden gönder</button>
+                    <button class="settings-mini-btn" onclick="openPlansModal()">💎 Abonelik paketlerim</button>
+                    <button class="settings-mini-btn" style="color:#ef4444; border-color:rgba(239,68,68,0.35);" onclick="handleDeleteAccount()">🗑️ Hesabı kalıcı olarak sil</button>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h4>🔔 Bildirimler & Arka Plan</h4>
+
+                <div class="switch-row">
+                    <div class="switch-text">
+                        <span class="switch-title">Lumina kendiliğinden yazsın</span>
+                        <span class="switch-desc">Bir süredir yazmadığında Lumina sana kısa ve doğal bir mesaj gönderebilir. Kapalıyken sadece sen yazınca cevap verir.</span>
+                    </div>
+                    <label class="switch"><input type="checkbox" id="pref-proactive" onchange="onPrefToggle('proactive', this.checked)"><span class="track"></span></label>
+                </div>
+
+                <div class="switch-row" id="pref-proactive-minutes-row">
+                    <div class="switch-text">
+                        <span class="switch-title">Ne kadar sessizlikten sonra?</span>
+                    </div>
+                    <select class="inline-select" id="pref-proactive-minutes" onchange="onPrefMinutes(this.value)">
+                        <option value="2">2 dk</option>
+                        <option value="5">5 dk</option>
+                        <option value="10">10 dk</option>
+                        <option value="30">30 dk</option>
+                        <option value="60">1 saat</option>
+                    </select>
+                </div>
+
+                <div class="switch-row">
+                    <div class="switch-text">
+                        <span class="switch-title">Cevap ve görsel bildirimi</span>
+                        <span class="switch-desc">Uygulama arka plandayken cevap ya da görsel hazır olunca bildirim gelir.</span>
+                    </div>
+                    <label class="switch"><input type="checkbox" id="pref-notify" onchange="onPrefToggle('notify', this.checked)"><span class="track"></span></label>
+                </div>
+
+                <div class="switch-row">
+                    <div class="switch-text">
+                        <span class="switch-title">Arka planda çalışmaya devam et</span>
+                        <span class="switch-desc">Soru sorduktan sonra uygulamadan çıksan da işlem sunucuda devam eder; geri döndüğünde cevap hazır olur.</span>
+                    </div>
+                    <label class="switch"><input type="checkbox" id="pref-keepalive" onchange="onPrefToggle('keepAlive', this.checked)"><span class="track"></span></label>
+                </div>
+
+                <div class="switch-row">
+                    <div class="switch-text">
+                        <span class="switch-title">Canlı akış (streaming) yanıt</span>
+                        <span class="switch-desc">Cevap harf harf canlı yazılsın; ⏹ düğmesiyle istediğin an durdurabilsin. Kapalıyken cevap sunucuda üretilir; uygulama arka plana alınsa da kalmaya devam eder.</span>
+                    </div>
+                    <label class="switch"><input type="checkbox" id="pref-streaming" onchange="onPrefToggle('streaming', this.checked)"><span class="track"></span></label>
+                </div>
+
+                <div class="switch-row">
+                    <div class="switch-text">
+                        <span class="switch-title">Ses ve titreşim</span>
+                        <span class="switch-desc">Bildirim geldiğinde kısa bir ses ve titreşim.</span>
+                    </div>
+                    <label class="switch"><input type="checkbox" id="pref-sound" onchange="onPrefToggle('sound', this.checked)"><span class="track"></span></label>
+                </div>
+
+                <div class="volume-row">
+                    <div class="volume-head">
+                        <span class="switch-title">🔊 Bildirim sesi seviyesi</span>
+                        <span class="volume-value" id="pref-volume-label">85%</span>
+                    </div>
+                    <div class="volume-controls">
+                        <span aria-hidden="true">🔈</span>
+                        <input type="range" id="pref-volume" min="0" max="100" step="5" value="85"
+                               aria-label="Bildirim sesi seviyesi" oninput="onVolumeInput(this.value)">
+                        <span aria-hidden="true">🔊</span>
+                        <button class="settings-mini-btn" style="margin-top:0;" onclick="previewSound()">▶ Dinle</button>
+                    </div>
+                    <span class="switch-desc">Bu çubuk Lumina'nın kendi uyarı melodisini ayarlar. Telefonun sistem bildirim sesi ise telefonun kendi ayarlarından (Ayarlar → Uygulamalar → bildirim kanalı) değişir.</span>
+                </div>
+
+                <div class="settings-status" id="notif-status"></div>
+                <button class="settings-mini-btn" onclick="sendTestNotification()">🔔 Test bildirimi gönder (3 sn sonra)</button>
+            </div>
+
+            <!-- 1. KİŞİLİK SEÇENEKLERİ (KARTLAR HALİNDE) -->
+            <div class="settings-section">
+                <h4>🎭 Lumina Kişiliği & Tavır</h4>
+                <span class="switch-desc" style="margin-bottom:8px;">Lumina'nın konuşma tarzını, duygusunu ve yanıt uzunluğunu kişiselleştirin:</span>
+                <div class="personality-grid" id="personality-selector">
+                    <div class="personality-card" data-personality="passive" onclick="selectPersonality('passive')">
+                        <div class="personality-card-header">
+                            <span class="personality-title">🧘 Pasif Mod</span>
+                            <span class="personality-badge">Sessiz & Öz</span>
+                        </div>
+                        <span class="personality-desc">Sadece sorulan soruya odaklanır. Gereksiz nezaket ve uzatmalardan kaçınır; sakin, doğrudan ve son derece kısa yanıtlar verir.</span>
+                    </div>
+
+                    <div class="personality-card active" data-personality="standard" onclick="selectPersonality('standard')">
+                        <div class="personality-card-header">
+                            <span class="personality-title">✨ Standart</span>
+                            <span class="personality-badge">Dostane</span>
+                        </div>
+                        <span class="personality-desc">Sıcak, empatik, yardımsever ve konuşkan bir arkadaş gibi iletişim kurar. Samimi bir duygusal bağ oluşturur.</span>
+                    </div>
+
+                    <div class="personality-card" data-personality="professional" onclick="selectPersonality('professional')">
+                        <div class="personality-card-header">
+                            <span class="personality-title">🎓 Profesyonel</span>
+                            <span class="personality-badge">Akademik</span>
+                        </div>
+                        <span class="personality-desc">Ciddi, kurumsal, analitik ve derinlemesine açıklamalar yapar. Terminolojiye ve kaynaklara önem verir.</span>
+                    </div>
+
+                    <div class="personality-card" data-personality="creative" onclick="selectPersonality('creative')">
+                        <div class="personality-card-header">
+                            <span class="personality-title">🎨 Yaratıcı</span>
+                            <span class="personality-badge">İlham Verici</span>
+                        </div>
+                        <span class="personality-desc">Özgün metaforlar, hikaye anlatımı, beyin fırtınası ve sanatsal bir dille hayal gücünü harekete geçirir.</span>
+                    </div>
+
+                    <div class="personality-card" data-personality="practical" onclick="selectPersonality('practical')">
+                        <div class="personality-card-header">
+                            <span class="personality-title">⚡ Hızlı & Pratik</span>
+                            <span class="personality-badge">Kod & Çözüm</span>
+                        </div>
+                        <span class="personality-desc">Lafı uzatmadan doğrudan çalışan kod blokları, teknik çözümler ve maddeli aksiyon adımları sunar.</span>
+                    </div>
+
+                    <div class="personality-card" data-personality="girly" onclick="selectPersonality('girly')">
+                        <div class="personality-card-header">
+                            <span class="personality-title">🌸 Girly Mode</span>
+                            <span class="personality-badge" style="background:#f472b6;color:#ffffff;">Zarif & Neşeli</span>
+                        </div>
+                        <span class="personality-desc">Sıcak, enerjik, samimi ve esprili bir arkadaş. Günlük yaşam, moda, dostluklar, popüler kültür ve tatlı sohbetlerle yaşam dolu bir atmosfer sunar.</span>
+                    </div>
+
+                    <div class="personality-card" data-personality="boys" onclick="selectPersonality('boys')">
+                        <div class="personality-card-header">
+                            <span class="personality-title">⚡ Boys Mode</span>
+                            <span class="personality-badge" style="background:#2563eb;color:#ffffff;">Dinamik & Net</span>
+                        </div>
+                        <span class="personality-desc">Doğrudan, özgüvenli, dinamik ve rekabetçi. Futbol, oyunlar, teknoloji, spor analizleri ve disiplinli antrenman sohbetlerinde harika bir yol arkadaşı.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MOD ORTAM MÜZİĞİ VE SES DENETİMİ -->
+            <div class="settings-section" id="mode-audio-settings-section">
+                <h4>🎵 Mod Ortam Sesi & Müzik (Girly & Boys Mode)</h4>
+                <span class="switch-desc" style="margin-bottom:8px;">Girly Mode ve Boys Mode'a özel rahatlatıcı veya dinamik arka plan ortam sesini kontrol edin:</span>
+                <div class="switch-row">
+                    <div class="switch-text">
+                        <span class="switch-title">Mod Arka Plan Müziği</span>
+                        <span class="switch-desc">Seçili moda uygun telifsiz, hafif ve huzurlu ortam melodisini otomatik çalar.</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="pref-mode-audio-toggle" onchange="toggleModeAudio(this.checked)">
+                        <span class="track"></span>
+                    </label>
+                </div>
+                <div class="volume-row">
+                    <div class="volume-head">
+                        <span class="switch-title">🔊 Ortam Müziği Seviyesi</span>
+                        <span class="volume-value" id="mode-audio-volume-label">40%</span>
+                    </div>
+                    <div class="volume-controls">
+                        <span aria-hidden="true">🔈</span>
+                        <input type="range" id="pref-mode-audio-volume" min="0" max="100" step="5" value="40"
+                               aria-label="Ortam müziği ses seviyesi" oninput="onModeAudioVolumeInput(this.value)">
+                        <span aria-hidden="true">🔊</span>
+                        <button class="settings-mini-btn" style="margin-top:0;" onclick="previewModeAudio()">▶ Dinle</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. SES SEÇENEKLERİ (JENNA, TOMMY VB.) -->
+            <div class="settings-section">
+                <h4>🎙️ Ses Seçenekleri</h4>
+                <span class="switch-desc">Sesli konuşma ve Canlı Ses Dairesi modunda kullanılacak sesi seçin. Her profil gerçek ve benzersiz bir sağlayıcı sesine bağlanır; pitch ile taklit yapılmaz.</span>
+
+                <div class="voice-engine-row">
+                    <span id="voice-engine-status" data-state="loading">Ses yetenekleri taranıyor...</span>
+                    <button class="settings-mini-btn" style="margin-top:0;" onclick="retryVoiceEngine()">↻ Yeniden Tara</button>
+                </div>
+
+                <div class="voice-section-title">👩 Kız Sesleri</div>
+                <div class="voice-grid">
+                    <div class="voice-card active" data-voice="jenna" onclick="selectVoiceOption('jenna')">
+                        <div class="voice-card-left">
+                            <div class="voice-avatar">👩</div>
+                            <div class="voice-info">
+                                <span class="voice-name">Jenna</span>
+                                <span class="voice-meta">Doğal & Canlı (Kadın)</span>
+                                <span class="voice-badge" id="voice-badge-jenna">Kontrol ediliyor…</span>
+                            </div>
+                        </div>
+                        <button class="voice-preview-btn" onclick="event.stopPropagation(); previewVoice('jenna')">▶ Dinle</button>
+                    </div>
+
+                    <div class="voice-card" data-voice="emma" onclick="selectVoiceOption('emma')">
+                        <div class="voice-card-left">
+                            <div class="voice-avatar">👩</div>
+                            <div class="voice-info">
+                                <span class="voice-name">Emma</span>
+                                <span class="voice-meta">Nazik & Dingin (Kadın)</span>
+                                <span class="voice-badge" id="voice-badge-emma">Kontrol ediliyor…</span>
+                            </div>
+                        </div>
+                        <button class="voice-preview-btn" onclick="event.stopPropagation(); previewVoice('emma')">▶ Dinle</button>
+                    </div>
+
+                    <div class="voice-card" data-voice="elif" onclick="selectVoiceOption('elif')">
+                        <div class="voice-card-left">
+                            <div class="voice-avatar">👩</div>
+                            <div class="voice-info">
+                                <span class="voice-name">Elif</span>
+                                <span class="voice-meta">Akıcı Türkçe (Kadın)</span>
+                                <span class="voice-badge" id="voice-badge-elif">Kontrol ediliyor…</span>
+                            </div>
+                        </div>
+                        <button class="voice-preview-btn" onclick="event.stopPropagation(); previewVoice('elif')">▶ Dinle</button>
+                    </div>
+                </div>
+
+                <div class="voice-section-title" style="margin-top:14px;">👨 Erkek Sesleri</div>
+                <div class="voice-grid">
+                    <div class="voice-card" data-voice="tommy" onclick="selectVoiceOption('tommy')">
+                        <div class="voice-card-left">
+                            <div class="voice-avatar">👨</div>
+                            <div class="voice-info">
+                                <span class="voice-name">Tommy</span>
+                                <span class="voice-meta">Dinamik & Modern (Erkek)</span>
+                                <span class="voice-badge" id="voice-badge-tommy">Kontrol ediliyor…</span>
+                            </div>
+                        </div>
+                        <button class="voice-preview-btn" onclick="event.stopPropagation(); previewVoice('tommy')">▶ Dinle</button>
+                    </div>
+
+                    <div class="voice-card" data-voice="david" onclick="selectVoiceOption('david')">
+                        <div class="voice-card-left">
+                            <div class="voice-avatar">👨</div>
+                            <div class="voice-info">
+                                <span class="voice-name">David</span>
+                                <span class="voice-meta">Tok & Karizmatik (Erkek)</span>
+                                <span class="voice-badge" id="voice-badge-david">Kontrol ediliyor…</span>
+                            </div>
+                        </div>
+                        <button class="voice-preview-btn" onclick="event.stopPropagation(); previewVoice('david')">▶ Dinle</button>
+                    </div>
+
+                    <div class="voice-card" data-voice="baris" onclick="selectVoiceOption('baris')">
+                        <div class="voice-card-left">
+                            <div class="voice-avatar">👨</div>
+                            <div class="voice-info">
+                                <span class="voice-name">Barış</span>
+                                <span class="voice-meta">Doğal Türkçe (Erkek)</span>
+                                <span class="voice-badge" id="voice-badge-baris">Kontrol ediliyor…</span>
+                            </div>
+                        </div>
+                        <button class="voice-preview-btn" onclick="event.stopPropagation(); previewVoice('baris')">▶ Dinle</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. RENK SEÇENEKLERİ (TEMA & VURGU RENGİ) -->
+            <div class="settings-section">
+                <h4>🎨 Tema & Vurgu Rengi</h4>
+                <span class="switch-desc">Uygulamanın ana rengini ana renk dairelerine dokunarak veya özel hex koduyla değiştirin:</span>
+                
+                <div class="color-palette-wrap">
+                    <div class="color-swatches" id="color-palette-swatches">
+                        <!-- JS renders or preset circles: Mavi, Mor, Yeşil, Kırmızı, Turuncu, Sarı, Cyan, Pembe, Beyaz -->
+                        <div class="color-circle active" style="background:#3b82f6;" data-color="#3b82f6" title="Saf Mavi" onclick="selectAccentColor('#3b82f6')"></div>
+                        <div class="color-circle" style="background:#8b5cf6;" data-color="#8b5cf6" title="Zümrüt Moru" onclick="selectAccentColor('#8b5cf6')"></div>
+                        <div class="color-circle" style="background:#10b981;" data-color="#10b981" title="Zümrüt Yeşili" onclick="selectAccentColor('#10b981')"></div>
+                        <div class="color-circle" style="background:#ef4444;" data-color="#ef4444" title="Canlı Kırmızı" onclick="selectAccentColor('#ef4444')"></div>
+                        <div class="color-circle" style="background:#f97316;" data-color="#f97316" title="Günbatımı Turuncu" onclick="selectAccentColor('#f97316')"></div>
+                        <div class="color-circle" style="background:#eab308;" data-color="#eab308" title="Altın Sarısı" onclick="selectAccentColor('#eab308')"></div>
+                        <div class="color-circle" style="background:#06b6d4;" data-color="#06b6d4" title="Okyanus Camgöbeği" onclick="selectAccentColor('#06b6d4')"></div>
+                        <div class="color-circle" style="background:#ec4899;" data-color="#ec4899" title="Neon Pembe" onclick="selectAccentColor('#ec4899')"></div>
+                        <div class="color-circle" style="background:#f5f5f5;" data-color="#f5f5f5" title="Minimal Beyaz" onclick="selectAccentColor('#f5f5f5')"></div>
+                    </div>
+
+                    <div class="color-custom-row">
+                        <div class="color-picker-box" title="Renk Paletinden Seç">
+                            <input type="color" id="theme-color-picker" value="#3b82f6" oninput="selectAccentColor(this.value)">
+                        </div>
+                        <input type="text" class="hex-code-input" id="theme-hex-input" placeholder="#3B82F6" maxlength="7" oninput="onHexCodeInput(this.value)">
+                        <span style="font-size:11px; color:var(--text-muted);">Özel Hex kodu ile her renk yapılabilir.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. API & GITHUB DEĞİŞKENLERİ -->
+            <div class="settings-section">
+                <h4>🔑 API & GitHub Değişkenleri</h4>
+                
+                <div class="form-row">
+                    <label>Backend API URL</label>
+                    <button type="button" class="choice-pill" onclick="checkBackendConnection()">Bağlantıyı sına</button><output id="backend-status" aria-live="polite"></output>
+                    <input type="text" id="setting-backend-url" placeholder="https://ornek-backend.example.com/api/v1">
+                    <span style="font-size:11px; color:var(--text-muted); display:block; margin-top:4px;">
+                        Yayında <strong>yalnızca HTTPS</strong> adres kabul edilir (örn. <code>https://ornek-backend.example.com/api/v1</code>).
+                        Yerel geliştirmede <code>http://127.0.0.1:8000/api/v1</code> otomatik kullanılır.
+                        Adres boşsa uygulama uydurma bir sunucuya bağlanmaz; cihaz üzerinde çalışır.
+                    </span>
+                </div>
+
+                <div class="form-row">
+                    <label>Google Gemini API Anahtarı (Önerilen)</label>
+                    <input type="password" id="setting-gemini-key" placeholder="AIzaSy...">
+                    <span style="font-size:11px; color:var(--text-muted); display:block; margin-top:4px;">
+                        Google AI Studio Gemini API anahtarı (Gemini 2.0 Flash & 1.5 Pro).
+                        Anahtar almak için: <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent);">aistudio.google.com</a>
+                    </span>
+                </div>
+
+                <div class="form-row">
+                    <label>Groq API Anahtarı (Kota Bitti mi? Sınırsız Kullan)</label>
+                    <input type="password" id="setting-groq-key" placeholder="gsk_...">
+                    <span style="font-size:11px; color:var(--text-muted); display:block; margin-top:4px;">
+                        Ücretsiz Groq API anahtarınızı buraya yerleştirerek doğrudan tarayıcıdan <strong>sınırsız</strong> kullanabilirsiniz.
+                        Anahtar almak için: <a href="https://console.groq.com" target="_blank" style="color:var(--accent);">console.groq.com</a>
+                    </span>
+                </div>
+
+                <div class="form-row">
+                    <label>GitHub Token / Variable (PAT - GitHub Models)</label>
+                    <input type="password" id="setting-github-token" placeholder="ghp_... veya github_pat_...">
+                    <span style="font-size:11px; color:var(--text-muted); display:block; margin-top:4px;">
+                        GitHub Repo Variables, Secrets veya Kişisel Erişim Belirteciniz (PAT) ile <strong>GitHub Models (GPT-4o-mini & Llama 3.3)</strong> API'sini ücretsiz kullanabilirsiniz.
+                        Ayrıca <code>config.js</code> dosyasından da otomatik algılanır.
+                    </span>
+                    <div id="github-var-status" style="margin-top:6px; font-size:11.5px; color:var(--text-secondary);"></div>
+                </div>
+            </div>
+
+            <button class="modal-action-btn" onclick="saveSettings()">
+                Ayarları Kaydet
+            </button>
+
+            <div class="form-row" style="margin-top:18px; padding-top:16px; border-top:1px solid var(--border-color, rgba(255,255,255,0.1));">
+                <label>🧠 Kalıcı Hafıza</label>
+                <span style="font-size:11px; color:var(--text-muted); display:block; margin-bottom:8px;">
+                    Lumina, konuşma boyunca söylediğin adını ve kalıcı bilgilerini (meslek, tercihler vb.)
+                    sohbet ne kadar uzarsa uzasın hatırlar. Şu an ne hatırladığını aşağıda görebilir,
+                    istersen tamamen sıfırlayabilirsin.
+                </span>
+                <div id="memory-info-box" style="white-space:pre-line; font-size:12px; background:rgba(127,127,127,0.08); border-radius:8px; padding:10px; margin-bottom:8px; min-height:20px;">
+                    Yükleniyor...
+                </div>
+                <button class="modal-action-btn" style="background:transparent; border:1px solid var(--danger, #e0575b); color:var(--danger, #e0575b);" onclick="resetLuminaMemory()">
+                    🗑️ Hafızamı Sıfırla
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- =========================================================
+         4. IMAGE STUDIO MODAL
+    ========================================================= -->
+    <div class="modal-backdrop" id="image-modal">
+        <div class="modal-box">
+            <div class="modal-box-header">
+                <h3>🎨 Görsel Stüdyosu</h3>
+                <button class="close-btn" onclick="closeImageStudioModal()">✕</button>
+            </div>
+
+            <div class="form-row">
+                <label>Görsel Tarzı</label>
+                <div class="pill-group" id="style-selector">
+                    <button class="choice-pill active" data-style="photorealistic" onclick="selectImageStyle('photorealistic')">📸 Gerçekçi Fotoğraf</button>
+                    <button class="choice-pill" data-style="cinematic" onclick="selectImageStyle('cinematic')">🎬 Sinematik</button>
+                    <button class="choice-pill" data-style="anime" onclick="selectImageStyle('anime')">👾 Anime / Manga</button>
+                    <button class="choice-pill" data-style="3d_render" onclick="selectImageStyle('3d_render')">🧊 3D Render</button>
+                    <button class="choice-pill" data-style="digital_art" onclick="selectImageStyle('digital_art')">🎨 Dijital Sanat</button>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label>En-Boy Oranı</label>
+                <div class="pill-group" id="ratio-selector">
+                    <button class="choice-pill active" data-ratio="1:1" onclick="selectImageRatio('1:1')">1:1 (Kare)</button>
+                    <button class="choice-pill" data-ratio="16:9" onclick="selectImageRatio('16:9')">16:9 (Yatay)</button>
+                    <button class="choice-pill" data-ratio="9:16" onclick="selectImageRatio('9:16')">9:16 (Dikey Story)</button>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label>Hayalindeki Sahneyi Açıkla (Türkçe veya İngilizce)</label>
+                <textarea
+                    id="image-prompt-input"
+                    rows="3"
+                    placeholder="Örn: Yağmurlu bir gecede neon ışıklarıyla parlayan İstanbul sokaklarında yürüyen gizemli bir adam..."
+                ></textarea>
+            </div>
+
+            <button class="modal-action-btn" onclick="submitImageGeneration()">
+                ✨ Kusursuz Görsel Üret
+            </button>
+        </div>
+    </div>
+
+
+    <!-- =========================================================
+         5. AUTH / LOGIN MODAL
+    ========================================================= -->
+    <div class="modal-backdrop" id="auth-modal">
+        <div class="modal-box auth-box">
+            <button class="auth-close-btn" onclick="dismissAuthGate()" title="Kapat">✕</button>
+
+            <div class="auth-hero">
+                <div class="auth-hero-logo">L</div>
+                <h2>Lumina AI'ya Hoş Geldin</h2>
+                <p>Hesabınla devam et, yeni bir hesap oluştur veya misafir olarak keşfet.</p>
+            </div>
+
+            <div class="auth-body">
+                <!-- SEÇİM EKRANI -->
+                <div class="auth-panel active" id="auth-panel-choice">
+                    <button class="auth-option-btn google" onclick="handleGoogleLogin()">
+                        <span class="auth-option-icon">G</span>
+                        <span class="auth-option-text">
+                            <strong>Google ile devam et</strong>
+                            <small>Tek tıkla güvenli giriş</small>
+                        </span>
+                        <span class="auth-option-arrow">→</span>
+                    </button>
+
+                    <div class="auth-divider"><span>veya e-posta ile</span></div>
+
+                    <div class="auth-email-actions">
+                        <button class="auth-ghost-btn primary" onclick="showEmailForm('login')">Giriş Yap</button>
+                        <button class="auth-ghost-btn" onclick="showEmailForm('register')">Kayıt Ol</button>
+                    </div>
+
+                    <button class="auth-guest-btn" onclick="continueAsGuest()">⚡ Misafir olarak devam et</button>
+                    <p class="auth-trust">Misafir modunda sohbetler yalnızca bu cihazda saklanır.</p>
+                </div>
+
+                <!-- E-POSTA FORMU -->
+                <div class="auth-panel" id="auth-panel-email">
+                    <button class="auth-back-btn" onclick="showAuthChoice()">← Geri</button>
+                    <h3 class="auth-form-title" id="auth-form-title">E-posta ile Giriş</h3>
+                    <p class="auth-form-sub" id="auth-form-subtitle">Hesabına giriş yaparak kaldığın yerden devam et.</p>
+
+                    <div class="form-row">
+                        <label for="auth-email">E-posta</label>
+                        <input type="email" id="auth-email" placeholder="ornek@mail.com" autocomplete="email" spellcheck="false">
+                    </div>
+
+                    <div class="form-row">
+                        <label for="auth-password">Şifre</label>
+                        <input type="password" id="auth-password" placeholder="••••••••" autocomplete="current-password" onkeydown="if (event.key === 'Enter') submitEmailAuth()">
+                    </div>
+
+                    <div class="auth-error" id="auth-error" role="alert"></div>
+
+                    <button class="auth-submit" id="auth-submit-btn" onclick="submitEmailAuth()">Giriş Yap</button>
+
+                    <div class="auth-switch">
+                        <span id="auth-switch-text">Hesabın yok mu?</span>
+                        <button type="button" id="auth-switch-btn" onclick="toggleEmailMode()">Kayıt Ol</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- =========================================================
+         ABONELİK & PAKETLER MODALI (10 PLAN, KARŞILAŞTIRMA & CUSTOM)
+    ========================================================= -->
+    <div class="modal-backdrop" id="plans-modal">
+        <div class="modal-box">
+            <div class="modal-box-header">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="font-size:22px;">💎</span>
+                    <div>
+                        <h3 style="margin:0; font-size:18px;">Lumina AI Abonelik Paketleri</h3>
+                        <span style="font-size:11.5px; color:var(--text-secondary);">Şeffaf kotalar, Gemini Pro ve amiral gemisi yapay zeka gücü</span>
+                    </div>
+                </div>
+                <button class="close-btn" onclick="closePlansModal()">✕</button>
+            </div>
+
+            <form onsubmit="redeemFounderPromo(event)" style="padding:12px 20px">
+                <label for="founder-promo">Promo kodu</label>
+                <input id="founder-promo" type="password" inputmode="numeric" pattern="[0-9]{11}" minlength="11" maxlength="11" required placeholder="11 haneli kod" autocomplete="off">
+                <button type="submit" class="btn-primary">Kodu kullan</button>
+                <span role="status" aria-live="polite"></span>
+            </form>
+            <!-- TAB NAV -->
+            <div class="plans-nav-tabs">
+                <button class="plans-nav-tab active" data-tab="cards" onclick="switchPlansTab('cards')">
+                    💳 Paket Kartları (10 Plan)
+                </button>
+                <button class="plans-nav-tab" data-tab="compare" onclick="switchPlansTab('compare')">
+                    📊 Karşılaştırma Tablosu
+                </button>
+                <button class="plans-nav-tab" data-tab="custom" onclick="switchPlansTab('custom')">
+                    🛠️ Custom Paket Sihirbazı
+                </button>
+                <button class="plans-nav-tab" data-tab="family" onclick="switchPlansTab('family')">
+                    👥 Duo & Aile Yönetimi
+                </button>
+            </div>
+
+            <!-- TAB 1: CARDS -->
+            <div id="plans-tab-cards" class="plans-tab-content">
+                <div class="plans-grid" id="plans-cards-container">
+                    <!-- Populated dynamically by renderPlanCards() -->
+                </div>
+            </div>
+
+            <!-- TAB 2: COMPARISON TABLE -->
+            <div id="plans-tab-compare" class="plans-tab-content" style="display:none;">
+                <div class="comparison-wrapper" id="plans-comparison-container">
+                    <!-- Populated dynamically by renderComparisonTable() -->
+                </div>
+            </div>
+
+            <!-- TAB 3: CUSTOM PLAN BUILDER -->
+            <div id="plans-tab-custom" class="plans-tab-content" style="display:none;">
+                <div class="custom-builder-box">
+                    <div>
+                        <h4 style="margin-bottom:14px; font-size:15px;">Kendi İhtiyacınıza Göre Özelleştirin</h4>
+                        
+                        <div class="custom-slider-row">
+                            <div class="custom-slider-header">
+                                <span>Günlük Mesaj Kotası</span>
+                                <span class="custom-slider-val" id="custom-val-msg">1.000 Mesaj</span>
+                            </div>
+                            <input type="range" id="custom-range-msg" min="250" max="15000" step="250" value="1000" oninput="onCustomSliderChange()" style="width:100%;">
+                        </div>
+
+                        <div class="custom-slider-row">
+                            <div class="custom-slider-header">
+                                <span>Günlük Görsel Kotası</span>
+                                <span class="custom-slider-val" id="custom-val-img">20 Görsel</span>
+                            </div>
+                            <input type="range" id="custom-range-img" min="5" max="200" step="5" value="20" oninput="onCustomSliderChange()" style="width:100%;">
+                        </div>
+
+                        <div class="custom-slider-row">
+                            <div class="custom-slider-header">
+                                <span>Model Tercihi</span>
+                            </div>
+                            <div class="pill-group" id="custom-model-tier-pills" style="margin-top:6px;">
+                                <button class="choice-pill" data-tier="standard" onclick="selectCustomModelTier('standard')">Standart</button>
+                                <button class="choice-pill active" data-tier="pro" onclick="selectCustomModelTier('pro')">Gemini Pro</button>
+                                <button class="choice-pill" data-tier="flagship" onclick="selectCustomModelTier('flagship')">Amiral Gemisi</button>
+                            </div>
+                        </div>
+
+                        <div class="custom-slider-row">
+                            <div class="custom-slider-header">
+                                <span>Yetkili Kullanıcı Sayısı (Koltuk)</span>
+                                <span class="custom-slider-val" id="custom-val-seats">1 Kişi</span>
+                            </div>
+                            <input type="range" id="custom-range-seats" min="1" max="10" step="1" value="1" oninput="onCustomSliderChange()" style="width:100%;">
+                        </div>
+                    </div>
+
+                    <div class="custom-breakdown-card">
+                        <div>
+                            <h4 style="margin-bottom:12px; font-size:15px;">Fiyat Dökümü</h4>
+                            <div id="custom-breakdown-details" style="font-size:12px; line-height:1.8; color:var(--text-secondary);">
+                                Yükleniyor...
+                            </div>
+                        </div>
+                        <div style="margin-top:20px; border-top:1px solid var(--border); padding-top:14px;">
+                            <div style="font-size:11px; color:var(--text-secondary);">Aylık Toplam Tutar:</div>
+                            <div style="font-size:28px; font-weight:800; color:var(--text-primary); margin:4px 0 10px;" id="custom-total-price">--- TL</div>
+                            <button class="modal-action-btn" onclick="selectCustomPlan()">
+                                Bu Özel Paketi Seç
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: DUO & AİLE YÖNETİMİ -->
+            <div id="plans-tab-family" class="plans-tab-content" style="display:none;">
+                <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:20px;">
+                    <h4 style="margin-bottom:8px; font-size:15px;">👥 Duo & Aile Ekibi Yönetimi</h4>
+                    <p style="font-size:12.5px; color:var(--text-secondary); margin-bottom:16px; line-height:1.5;">
+                        Duo veya Aile paketiniz varsa ekibinizdeki diğer üyeleri buraya e-posta ile ekleyebilirsiniz. Her üye kendi bağımsız hesabıyla giriş yapar, sohbetleri ve hafızası tamamen gizli kalır.
+                    </p>
+
+                    <div style="display:flex; gap:8px; margin-bottom:18px;">
+                        <input type="email" id="family-invite-email" placeholder="Davet edilecek üyenin e-postası" style="flex:1; padding:9px 12px; border-radius:8px; background:var(--bg-input); border:1px solid var(--border); font-size:13px;">
+                        <button class="modal-action-btn" style="width:auto; padding:9px 18px;" onclick="sendFamilyInvite()">Davet Et</button>
+                    </div>
+
+                    <h5 style="margin-bottom:8px; font-size:13px;">Kayıtlı Ekip Üyeleri:</h5>
+                    <div id="family-members-list" style="display:flex; flex-direction:column; gap:6px;">
+                        <span style="font-size:12px; color:var(--text-muted);">Henüz eklenmiş üye yok.</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- =========================================================
+         6. QUOTA EXCEEDED MODAL
+    ========================================================= -->
+    <div class="modal-backdrop" id="quota-exceeded-modal">
+        <div class="modal-box" style="max-width:400px;text-align:center;">
+            <div id="quota-exceeded-body">
+                <!-- Populated dynamically by showQuotaExceededModal() -->
+            </div>
+            <button class="modal-action-btn" onclick="openSettingsFromQuota()" style="margin-bottom:8px;">
+                ⚙️ Kendi API Anahtarımı Ekle
+            </button>
+            <button class="modal-action-btn" onclick="closeQuotaExceededModal()" style="background:var(--bg-card);color:var(--text-secondary);border:1px solid var(--border);">
+                Kapat
+            </button>
+            <p style="font-size:10px;color:var(--text-muted);margin-top:10px;">
+                Groq API anahtarı tamamen ücretsizdir. <a href="https://console.groq.com" target="_blank" style="color:var(--accent);">console.groq.com</a> adresinden saniyeler içinde alabilirsiniz.
+            </p>
+        </div>
+    </div>
+
+
+    <!-- =========================================================
+         7. LIGHTBOX MODAL
+    ========================================================= -->
+    <div id="lightbox-modal" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="Tam Ekran Görsel">
+    </div>
+
+    <!-- =========================================================
+         8. CANLI SESLİ SOHBET MODU (VOICE ORB MODAL - GÖRSELDEKİ BİREBİR TASARIM)
+    ========================================================= -->
+    <div id="voice-mode-modal">
+        <!-- TOPBAR -->
+        <div class="voice-topbar">
+            <button class="voice-icon-btn" onclick="closeLiveVoiceMode()" title="Menüye / Sohbete Dön">
+                <span class="voice-hamburger-bar"></span>
+                <span class="voice-hamburger-bar"></span>
+            </button>
+
+            <div class="voice-top-right">
+                <button class="voice-icon-btn" onclick="openSettingsModal()" title="Ses & Kişilik Ayarları">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="4" y1="21" x2="4" y2="14"></line>
+                        <line x1="4" y1="10" x2="4" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12" y2="3"></line>
+                        <line x1="20" y1="21" x2="20" y2="16"></line>
+                        <line x1="20" y1="12" x2="20" y2="3"></line>
+                        <line x1="1" y1="14" x2="7" y2="14"></line>
+                        <line x1="9" y1="8" x2="15" y2="8"></line>
+                        <line x1="17" y1="16" x2="23" y2="16"></line>
+                    </svg>
+                </button>
+                <div class="voice-green-dot" title="Mikrofon ve Canlı Ses Modu Aktif"></div>
+            </div>
+        </div>
+
+        <!-- CENTER CIRCULAR ORB -->
+        <div class="voice-center">
+            <div class="voice-orb-wrapper listening" id="voice-orb-wrapper" onclick="toggleVoiceModeMic()">
+                <div class="voice-ripple voice-ripple-1"></div>
+                <div class="voice-ripple voice-ripple-2"></div>
+                <div class="voice-ripple voice-ripple-3"></div>
+                <div class="voice-orb" id="voice-orb" title="Konuşmak veya Duraklatmak için Dokunun"></div>
+            </div>
+
+            <div class="voice-status-pill" id="voice-status-pill">
+                <span id="voice-status-icon">🟢</span>
+                <span id="voice-status-text">Dinliyor...</span>
+            </div>
+
+            <div class="voice-transcript-box" id="voice-transcript-box">
+                Konuşmaya başlayın... Lumina sizi dinliyor.
+            </div>
+        </div>
+
+        <!-- BOTTOM CONTROLS (GÖRSELDEKİ BİREBİR DÜZEN) -->
+        <div class="voice-bottom-bar">
+            <div class="voice-ask-pill" onclick="switchToTextInputFromVoice()" title="Metinle Sormak İçin Dokun">
+                <span class="voice-pill-plus">+</span>
+                <span>Lumina'ya sor</span>
+            </div>
+
+            <button class="voice-btn-round voice-mic-btn" id="voice-mic-round-btn" onclick="toggleVoiceModeMic()" title="Mikrofonu Aç/Kapat">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                    <line x1="12" y1="19" x2="12" y2="23"></line>
+                    <line x1="8" y1="23" x2="16" y2="23"></line>
+                </svg>
+            </button>
+
+            <button class="voice-btn-round voice-close-btn" onclick="closeLiveVoiceMode()" title="Canlı Sesli Sohbeti Kapat">
+                ✕
+            </button>
+        </div>
+    </div>
+
+    <!-- MESAJ SAĞ TIK / BASILI TUT MENÜSÜ -->
+    <div id="message-context-menu" role="menu" aria-label="Mesaj işlemleri" hidden>
+        <button type="button" class="msg-context-item" role="menuitem" data-context-action="copy">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span>Mesajı kopyala</span>
+        </button>
+        <button type="button" class="msg-context-item" role="menuitem" data-context-action="speak">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5Z"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M18.36 5.64a9 9 0 0 1 0 12.72"></path></svg>
+            <span>Sesli oku</span>
+        </button>
+        <div class="msg-context-sep" role="separator"></div>
+        <button type="button" class="msg-context-item" role="menuitem" data-context-action="regenerate">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"></path><path d="M21 3v6h-6"></path></svg>
+            <span>Yeniden üret</span>
+        </button>
+        <button type="button" class="msg-context-item danger" role="menuitem" data-context-action="delete">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg>
+            <span>Mesajı sil</span>
+        </button>
+    </div>
+
+    <!-- App Logic -->
+    <div id="toast-stack" aria-live="polite"></div>
+    <!-- Sürüm sorgusu, güncellemelerde tarayıcı HTTP önbelleğinin eski
+         config.js/app.js dosyalarını sunmasını engeller. Her sürümde artırın. -->
+    <script src="purify.min.js"></script>
+    <script src="config.js?v=3.2.4.1" onerror=""></script>
+    <script src="voice_engine.js?v=3.2.4.4" onerror=""></script>
+    <script src="location_ui.js?v=3.2.4.1" onerror=""></script>
+    <script src="citation_ui.js?v=3.2.4.1" onerror=""></script>
+    <script src="app.js?v=3.2.4.4"></script>
+<dialog id="file-viewer" aria-labelledby="file-viewer-title">
+        <h3 id="file-viewer-title"></h3>
+        <img hidden alt="Dosya önizlemesi">
+        <p role="status"></p><pre></pre>
+        <button type="button" data-prev>Önceki bölüm</button><button type="button" data-next>Sonraki bölüm</button>
+        <button type="button" data-analyze>Sohbete ekle ve analiz et</button>
+        <button type="button" autofocus onclick="this.closest('dialog').close()">Kapat</button>
+    </dialog>
+</body>
+</html>
